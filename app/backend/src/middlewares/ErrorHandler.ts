@@ -6,7 +6,7 @@ export default class ErrorHandler {
     const { code, message } = err as any;
 
     if (!code || !message) {
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message });
     }
 
     return res.status(code).json({ message });
