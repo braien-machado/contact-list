@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
-import { StatusCodes } from 'http-status-codes';
+import 'express-async-errors';
+
+import ContactRouter from './routes/Contact';
+import ErrorHandler from './middlewares/ErrorHandler';
 
 class App {
   public app: express.Express;
@@ -22,9 +25,9 @@ class App {
     this.app.use(cors());
     this.app.use(express.json());
 
-    this.app.get('/', (req, res) => {
-      res.status(StatusCodes.OK).send('Contact List');
-    });
+    this.app.use(ContactRouter);
+
+    this.app.use(ErrorHandler.error);
   }
 
   public start(PORT: string | number): void {
