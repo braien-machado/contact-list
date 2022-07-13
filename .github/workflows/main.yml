@@ -1,0 +1,20 @@
+on:
+  workflow_dispatch:
+
+  pull_request:
+    types: [opened, synchronize]
+
+
+jobs:
+  ESLint-Evaluator:
+    runs-on: ubuntu-latest
+    name: ESLint
+    steps:
+      - name: Fetch project repository
+        uses: actions/checkout@v2
+
+      - name: ESLint evaluator
+        run: |
+          cd app/backend
+          npm i
+          npm run lint
