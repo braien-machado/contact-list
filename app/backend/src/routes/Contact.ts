@@ -1,12 +1,8 @@
-import express, { Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
+import express from 'express';
 import ContactController from '../controllers/Contact';
 
 const ContactRouter: express.Router = express.Router();
 
-ContactRouter.get(
-  '/',
-  ContactController.getContacts,
-);
+ContactRouter.get('/', ContactController.getContacts);
 
 export default ContactRouter;
