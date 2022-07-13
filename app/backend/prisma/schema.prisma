@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id  Int @id @default(autoincrement())
+  fullName String
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  phoneNumbers Phone[]
+  emails Email[]
+}
+
+model Phone {
+  id  Int @id @default(autoincrement())
+  phoneNumber String @unique
+  whatsapp Boolean @default(false)
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  owner Contact @relation(fields: [ownerId], references: [id])
+  ownerId Int
+}
+
+model Email {
+  id  Int @id @default(autoincrement())
+  email String @unique
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  owner Contact @relation(fields: [ownerId], references: [id])
+  ownerId Int
+}
