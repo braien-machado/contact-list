@@ -2,7 +2,7 @@ import IPhone from '../interfaces/IPhone';
 import PhoneModel from '../models/Phone';
 
 export default class PhoneService {
-  public static async getPhoneByParam(id: number, param = 'id') {
+  public static async getPhoneByParam(id: number | string, param = 'id') {
     return PhoneModel.getPhoneByParam(id, param);
   }
 

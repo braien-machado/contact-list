@@ -1,10 +1,8 @@
 import IEmail from '../interfaces/IEmail';
 import EmailModel from '../models/Email';
 
-type EmailValue = number | string;
-
 export default class EmailService {
-  public static async getEmailByParam(value: EmailValue, param = 'id') {
+  public static async getEmailByParam(value: number | string, param = 'id') {
     return EmailModel.getEmailByParam(value, param);
   }
 

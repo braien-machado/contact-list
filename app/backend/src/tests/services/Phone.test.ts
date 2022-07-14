@@ -8,25 +8,44 @@ import PhoneService from '../../services/Phone';
 
 describe('PhoneService', () => {
   describe('getPhoneByParam', () => {
-    let getPhoneByParamStub: SinonStub;
+    describe('when there is a match', () => {
+      let getPhoneByParamStub: SinonStub;
 
-    before(async () => {
-      getPhoneByParamStub = sinon.stub(PhoneModel, 'getPhoneByParam').resolves(mockedPhone);
+      before(async () => {
+        getPhoneByParamStub = sinon.stub(PhoneModel, 'getPhoneByParam').resolves(mockedPhone);
+      });
+
+      after(async () => {
+        getPhoneByParamStub.restore();
+      });
+
+      it('should return a Phone', async () => {
+        const response = await PhoneService.getPhoneByParam(1);
+        expect(response).to.be.an('object');
+      });
+
+      it('the id should be equal to the param', async () => {
+        const response = await PhoneModel.getPhoneByParam(1);
+
+        expect(response?.id).to.be.equal(1);
+      });
     });
 
-    after(async () => {
-      getPhoneByParamStub.restore();
-    });
+    describe('when there is no match', () => {
+      let getPhoneByParamStub: SinonStub;
 
-    it('should return a Phone', async () => {
-      const response = await PhoneService.getPhoneByParam(1);
-      expect(response).to.be.an('object');
-    });
+      before(async () => {
+        getPhoneByParamStub = sinon.stub(PhoneModel, 'getPhoneByParam').resolves(null);
+      });
 
-    it('the id should be equal to the param', async () => {
-      const response = await PhoneModel.getPhoneByParam(1);
+      after(async () => {
+        getPhoneByParamStub.restore();
+      });
 
-      expect(response?.id).to.be.equal(1);
+      it('should return null', async () => {
+        const response = await PhoneService.getPhoneByParam('+551111', 'phoneNumber');
+        expect(response).to.be.equal(null);
+      });
     });
   });
 
