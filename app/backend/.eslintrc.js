@@ -24,6 +24,7 @@ module.exports = {
     'mocha'
   ],
   rules: {
+    'mocha/no-mocha-arrows': 'off',
     'no-underscore-dangle': 'off',
     'no-console': 'off',
     camelcase: 'warn',
