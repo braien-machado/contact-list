@@ -30,4 +30,11 @@ const mockedContacts = [
   },
 ];
 
+export const newContact = {
+  id: 1,
+  fullName: 'TestName',
+  emails: [],
+  phoneNumbers: [],
+};
+
 export default mockedContacts;

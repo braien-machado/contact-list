@@ -7,11 +7,12 @@ import chaiHttp from 'chai-http';
 import { Response } from 'superagent';
 
 import { app } from '../../app';
-import mockedContacts from '../mocks/contact';
+import mockedContacts, { newContact } from '../mocks/contact';
 import ContactService from '../../services/Contact';
 
 chai.use(chaiHttp);
 let response: Response;
+let stub: SinonStub;
 
 describe('POST /', () => {
   describe('with no fullName', () => {
@@ -30,10 +31,32 @@ describe('POST /', () => {
       expect(response.body.message).to.be.equal('fullName must be provided.');
     });
   });
+
+  describe('with valid fullName', () => {
+    before(async () => {
+      stub = sinon.stub(ContactService, 'createContact').resolves(newContact);
+
+      response = await chai
+        .request(app)
+        .post('/')
+        .send({ fullName: 'TestName' });
+    });
+
+    after(() => {
+      stub.restore();
+    });
+
+    it('should have status 201', async () => {
+      expect(response).to.have.status(201);
+    });
+
+    it('should have new contact in body', async () => {
+      expect(response.body).to.be.deep.equal(newContact);
+    });
+  });
 });
 
 describe('GET /', () => {
-  let stub: SinonStub;
   before(async () => {
     stub = sinon.stub(ContactService, 'getContacts').resolves(mockedContacts);
 
