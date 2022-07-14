@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../prisma/client';
 import IPhone from '../interfaces/IPhone';
-
-const prisma = new PrismaClient();
 
 type PhoneValue = number | string;
 

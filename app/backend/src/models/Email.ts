@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../prisma/client';
 import IEmail from '../interfaces/IEmail';
-
-const prisma = new PrismaClient();
 
 type EmailValue = number | string;
 
