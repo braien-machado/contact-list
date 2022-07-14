@@ -4,6 +4,7 @@ import 'express-async-errors';
 
 import ContactRouter from './routes/Contact';
 import ErrorHandler from './middlewares/ErrorHandler';
+import PhoneRouter from './routes/Phone';
 
 class App {
   public app: express.Express;
@@ -25,7 +26,8 @@ class App {
     this.app.use(cors());
     this.app.use(express.json());
 
-    this.app.use(ContactRouter);
+    this.app.use('/', ContactRouter);
+    this.app.use('/phone', PhoneRouter);
 
     this.app.use(ErrorHandler.error);
   }
