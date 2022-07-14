@@ -22,4 +22,16 @@ export default class ContactModel {
     });
     return contacts;
   }
+
+  static async getContactById(id: number) {
+    return prisma.contact.findUnique({ where: { id } });
+  }
+
+  static async deleteContactById(id: number) {
+    const deletePhones = prisma.phone.deleteMany({ where: { ownerId: id } });
+    const deleteEmails = prisma.email.deleteMany({ where: { ownerId: id } });
+    const deleteContact = prisma.contact.deleteMany({ where: { id } });
+
+    await prisma.$transaction([deletePhones, deleteEmails, deleteContact]);
+  }
 }
