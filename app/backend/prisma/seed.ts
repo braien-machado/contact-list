@@ -17,16 +17,30 @@ const contactData: Prisma.ContactCreateInput[] = [
       },
     },
   },
+  {
+    fullName: 'Braien',
+    phoneNumbers: {
+      create: {
+        phoneNumber: '22992444721',
+        whatsapp: true,
+      },
+    },
+    emails: {
+      create: {
+        email: 'braienmp@hotmail.com',
+      },
+    },
+  },
 ];
 
 async function main() {
-  console.log('Start seeding...')
-  for (const contact of contactData) {
+  console.log('Start seeding...');
+  contactData.forEach(async (contact) => {
     const createdContact = await prisma.contact.create({
       data: contact,
     });
-    console.log(`Created contact with id: ${createdContact.id}`)
-  }
+    console.log(`Created contact with id: ${createdContact.id}`);
+  });
 
   console.log('Seeding finished.');
 }
