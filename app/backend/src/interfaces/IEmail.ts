@@ -1,5 +1,5 @@
 interface IEmail {
-  id: number;
+  id?: number;
   email: string;
   ownerId: number;
 }

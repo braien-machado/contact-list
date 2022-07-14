@@ -13,4 +13,8 @@ export default class PhoneService {
   public static async updatePhoneById(id: number, obj: Partial<IPhone>) {
     await PhoneModel.updatePhoneById(id, obj);
   }
+
+  static async createPhone(obj: IPhone) {
+    return PhoneModel.createPhone(obj);
+  }
 }

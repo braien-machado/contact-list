@@ -13,5 +13,13 @@ PhoneRouter.patch(
   PhoneMiddleware.validateWhatsappBool,
   PhoneController.updatePhoneById,
 );
+PhoneRouter.post(
+  '/',
+  PhoneMiddleware.validateCreatePhoneBody,
+  PhoneMiddleware.validateOwnerId,
+  PhoneMiddleware.validatePhoneNumber,
+  PhoneMiddleware.validateWhatsappBool,
+  PhoneController.createPhone,
+);
 
 export default PhoneRouter;

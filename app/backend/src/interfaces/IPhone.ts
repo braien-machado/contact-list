@@ -1,7 +1,7 @@
 interface IPhone {
-  id: number;
+  id?: number;
   phoneNumber: string;
-  whatsapp: boolean;
+  whatsapp?: boolean;
   ownerId: number;
 }
 

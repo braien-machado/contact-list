@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import IPhone from '../interfaces/IPhone';
 
 const prisma = new PrismaClient();
@@ -21,5 +21,9 @@ export default class PhoneModel {
       },
       data: obj,
     });
+  }
+
+  static async createPhone(obj: IPhone) {
+    return prisma.phone.create({ data: obj });
   }
 }
