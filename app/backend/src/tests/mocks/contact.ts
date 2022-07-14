@@ -1,7 +1,7 @@
 const mockedContacts = [
   {
     id: 1,
-    fullName: 'Nome de teste',
+    fullName: 'TestName',
     emails: [],
     phoneNumbers: [
       {
@@ -13,7 +13,7 @@ const mockedContacts = [
   },
   {
     id: 2,
-    fullName: 'Nome de teste',
+    fullName: 'TestName2',
     emails: [
       {
         id: 1,
