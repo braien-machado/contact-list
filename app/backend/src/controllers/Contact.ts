@@ -15,4 +15,20 @@ export default class ContactController {
 
     res.status(StatusCodes.NO_CONTENT).end();
   }
+
+  public static async updateContactById(req: Request, res: Response) {
+    const { id } = req.params;
+    const { fullName } = req.body;
+
+    await ContactService.updateContactById(parseInt(id, 10), fullName);
+
+    res.status(StatusCodes.OK).json({ message: 'Contact has been updated successfully' });
+  }
+
+  public static async createContact(req: Request, res: Response) {
+    const { fullName } = req.body;
+    const createdContact = await ContactService.createContact(fullName);
+
+    res.status(StatusCodes.CREATED).json(createdContact);
+  }
 }

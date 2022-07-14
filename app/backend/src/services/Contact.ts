@@ -14,4 +14,12 @@ export default class ContactService {
   public static async deleteContactById(id: number) {
     await ContactModel.deleteContactById(id);
   }
+
+  public static async updateContactById(id: number, fullName: string) {
+    await ContactModel.updateContactById(id, fullName);
+  }
+
+  public static async createContact(fullName: string) {
+    return ContactModel.createContact(fullName);
+  }
 }
