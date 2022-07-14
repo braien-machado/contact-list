@@ -9,4 +9,13 @@ export default class EmailController {
 
     res.status(StatusCodes.NO_CONTENT).end();
   }
+
+  public static async updateEmailById(req: Request, res: Response) {
+    const { id } = req.params;
+    const { email } = req.body;
+
+    await EmailService.updateEmailById(parseInt(id, 10), email);
+
+    res.status(StatusCodes.OK).json({ message: 'Email has been updated successfully' });
+  }
 }
