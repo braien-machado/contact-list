@@ -13,6 +13,6 @@ export default class ContactController {
     const { id } = req.params;
     await ContactService.deleteContactById(parseInt(id, 10));
 
-    res.status(StatusCodes.NO_CONTENT);
+    res.status(StatusCodes.NO_CONTENT).end();
   }
 }
