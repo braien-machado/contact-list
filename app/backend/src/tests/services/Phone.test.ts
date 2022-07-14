@@ -5,7 +5,6 @@ import sinon, { SinonStub } from 'sinon';
 import mockedPhone from '../mocks/phone';
 import PhoneModel from '../../models/Phone';
 import PhoneService from '../../services/Phone';
-import IPhone from '../../interfaces/IPhone';
 
 describe('PhoneService', () => {
   describe('getPhoneByParam', () => {
