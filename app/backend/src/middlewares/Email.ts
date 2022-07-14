@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import EmailService from '../services/Email';
 
 export default class EmailMiddleware {
-  public static async validateId(req: Request, res: Response, next: NextFunction) {
+  public static async validateId(req: Request, _res: Response, next: NextFunction) {
     const { id } = req.params;
     const contact = await EmailService.getEmailByParam(parseInt(id, 10));
 
@@ -12,7 +12,7 @@ export default class EmailMiddleware {
     next();
   }
 
-  public static async validateEmail(req: Request, res: Response, next: NextFunction) {
+  public static async validateEmail(req: Request, _res: Response, next: NextFunction) {
     const { email } = req.body;
     const regex = /^[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+$/;
 

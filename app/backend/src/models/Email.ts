@@ -13,7 +13,7 @@ export default class EmailModel {
     await prisma.email.delete({ where: { id } });
   }
 
-  static async updateEmailBydId(id: number, email: string) {
+  static async updateEmailById(id: number, email: string) {
     await prisma.email.update({
       where: {
         id,

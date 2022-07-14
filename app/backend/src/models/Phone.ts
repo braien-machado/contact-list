@@ -14,7 +14,7 @@ export default class PhoneModel {
     await prisma.phone.delete({ where: { id } });
   }
 
-  static async updatePhoneBydId(id: number, obj: IPhone) {
+  static async updatePhoneById(id: number, obj: Partial<IPhone>) {
     await prisma.phone.update({
       where: {
         id,

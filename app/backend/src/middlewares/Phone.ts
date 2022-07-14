@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import PhoneService from '../services/Phone';
 
 export default class PhoneMiddleware {
-  public static async validatePhoneBody(req: Request, res: Response, next: NextFunction) {
+  public static async validatePhoneBody(req: Request, _res: Response, next: NextFunction) {
     const { whatsapp, phoneNumber } = req.body;
 
     if (typeof whatsapp !== 'boolean' && !phoneNumber) {
@@ -16,7 +16,7 @@ export default class PhoneMiddleware {
     next();
   }
 
-  public static async validateId(req: Request, res: Response, next: NextFunction) {
+  public static async validateId(req: Request, _res: Response, next: NextFunction) {
     const { id } = req.params;
     const contact = await PhoneService.getPhoneByParam(parseInt(id, 10));
 
@@ -25,7 +25,7 @@ export default class PhoneMiddleware {
     next();
   }
 
-  public static async validatePhoneNumber(req: Request, res: Response, next: NextFunction) {
+  public static async validatePhoneNumber(req: Request, _res: Response, next: NextFunction) {
     const { phoneNumber } = req.body;
     const regex = /^\+[1-9][0-9]\d{1,14}$/;
 
@@ -47,7 +47,7 @@ export default class PhoneMiddleware {
     });
   }
 
-  public static async validateWhatsappBool(req: Request, res: Response, next: NextFunction) {
+  public static async validateWhatsappBool(req: Request, _res: Response, next: NextFunction) {
     const { whatsapp } = req.body;
 
     if (!whatsapp || typeof whatsapp === 'boolean') return next();

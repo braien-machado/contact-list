@@ -15,4 +15,13 @@ export default class ContactController {
 
     res.status(StatusCodes.NO_CONTENT).end();
   }
+
+  public static async updateContactById(req: Request, res: Response) {
+    const { id } = req.params;
+    const { fullName } = req.body;
+
+    await ContactService.updateContactById(parseInt(id, 10), fullName);
+
+    res.status(StatusCodes.OK).json({ message: 'Contact has been updated successfully' });
+  }
 }

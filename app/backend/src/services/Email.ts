@@ -12,6 +12,6 @@ export default class EmailService {
   }
 
   public static async updateEmailById(id: number, email: string) {
-    await EmailModel.updateEmailBydId(id, email);
+    await EmailModel.updateEmailById(id, email);
   }
 }

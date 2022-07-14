@@ -10,7 +10,7 @@ export default class PhoneService {
     await PhoneModel.deletePhoneById(id);
   }
 
-  public static async updatePhoneById(id: number, obj: IPhone) {
-    await PhoneModel.updatePhoneBydId(id, obj);
+  public static async updatePhoneById(id: number, obj: Partial<IPhone>) {
+    await PhoneModel.updatePhoneById(id, obj);
   }
 }

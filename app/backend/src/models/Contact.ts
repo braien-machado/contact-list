@@ -23,4 +23,8 @@ export default class ContactModel {
 
     await prisma.$transaction([deletePhones, deleteEmails, deleteContact]);
   }
+
+  static async updateContactById(id: number, fullName: string) {
+    await prisma.contact.update({ where: { id }, data: { fullName } });
+  }
 }
