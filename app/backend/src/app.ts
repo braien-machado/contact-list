@@ -5,6 +5,7 @@ import 'express-async-errors';
 import ContactRouter from './routes/Contact';
 import ErrorHandler from './middlewares/ErrorHandler';
 import PhoneRouter from './routes/Phone';
+import EmailRouter from './routes/Email';
 
 class App {
   public app: express.Express;
@@ -28,6 +29,7 @@ class App {
 
     this.app.use('/', ContactRouter);
     this.app.use('/phone', PhoneRouter);
+    this.app.use('/email', EmailRouter);
 
     this.app.use(ErrorHandler.error);
   }
