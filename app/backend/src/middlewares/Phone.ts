@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import IPhone from '../interfaces/IPhone';
-import ContactService from '../services/Contact';
 import PhoneService from '../services/Phone';
 
 export default class PhoneMiddleware {
@@ -60,23 +59,6 @@ export default class PhoneMiddleware {
       code: StatusCodes.CONFLICT,
       message: 'Phone is already in use.',
     });
-  }
-
-  public static async validateOwnerId(req: Request, _res: Response, next: NextFunction) {
-    const { ownerId } = req.body;
-
-    if (typeof ownerId !== 'number') {
-      return next({
-        code: StatusCodes.BAD_REQUEST,
-        message: 'Invalid ownerId value.',
-      });
-    }
-
-    const contact = await ContactService.getContactById(ownerId);
-
-    if (!contact) return next({ code: StatusCodes.NOT_FOUND, message: 'Contact not found' });
-
-    next();
   }
 
   public static async validateWhatsappBool(req: Request, _res: Response, next: NextFunction) {

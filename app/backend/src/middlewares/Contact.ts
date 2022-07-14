@@ -31,4 +31,21 @@ export default class ContactMiddleware {
 
     return next();
   }
+
+  public static async validateOwnerId(req: Request, _res: Response, next: NextFunction) {
+    const { ownerId } = req.body;
+
+    if (typeof ownerId !== 'number') {
+      return next({
+        code: StatusCodes.BAD_REQUEST,
+        message: 'Invalid ownerId value.',
+      });
+    }
+
+    const contact = await ContactService.getContactById(ownerId);
+
+    if (!contact) return next({ code: StatusCodes.NOT_FOUND, message: 'Contact not found' });
+
+    next();
+  }
 }

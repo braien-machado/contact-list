@@ -1,5 +1,6 @@
 import express from 'express';
 import PhoneController from '../controllers/Phone';
+import ContactMiddleware from '../middlewares/Contact';
 import PhoneMiddleware from '../middlewares/Phone';
 
 const PhoneRouter: express.Router = express.Router();
@@ -16,7 +17,7 @@ PhoneRouter.patch(
 PhoneRouter.post(
   '/',
   PhoneMiddleware.validateCreatePhoneBody,
-  PhoneMiddleware.validateOwnerId,
+  ContactMiddleware.validateOwnerId,
   PhoneMiddleware.validatePhoneNumber,
   PhoneMiddleware.validateWhatsappBool,
   PhoneController.createPhone,

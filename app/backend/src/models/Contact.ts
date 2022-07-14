@@ -6,8 +6,8 @@ export default class ContactModel {
   static async getContacts() {
     return prisma.contact.findMany({
       include: {
-        emails: true,
-        phoneNumbers: true,
+        emails: { select: { id: true, email: true } },
+        phoneNumbers: { select: { id: true, phoneNumber: true, whatsapp: true } },
       },
     });
   }

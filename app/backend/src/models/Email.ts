@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import IEmail from '../interfaces/IEmail';
 
 const prisma = new PrismaClient();
 
@@ -22,5 +23,9 @@ export default class EmailModel {
         email,
       },
     });
+  }
+
+  static async createEmail(obj: IEmail) {
+    return prisma.email.create({ data: obj });
   }
 }
