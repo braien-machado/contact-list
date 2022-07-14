@@ -12,5 +12,10 @@ ContactRouter.patch(
   ContactMiddleware.validateContactName,
   ContactController.updateContactById,
 );
+ContactRouter.post(
+  '/',
+  ContactMiddleware.validateContactName,
+  ContactController.createContact,
+);
 
 export default ContactRouter;

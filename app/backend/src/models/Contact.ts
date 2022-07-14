@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import IContact from '../interfaces/IContact';
 
 const prisma = new PrismaClient();
 
@@ -26,5 +27,15 @@ export default class ContactModel {
 
   static async updateContactById(id: number, fullName: string) {
     await prisma.contact.update({ where: { id }, data: { fullName } });
+  }
+
+  static async createContact(fullName: string) {
+    return prisma.contact.create({
+      data: {
+        fullName,
+        emails: {},
+        phoneNumbers: {},
+      },
+    });
   }
 }
