@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import IContact from '../interfaces/IContact';
 
 const prisma = new PrismaClient();
 
