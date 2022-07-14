@@ -116,7 +116,7 @@ describe('ContactService', () => {
     it('"fullName" property should be equal to the param', async () => {
       const response = await ContactModel.createContact(fullName);
 
-      expect(response.fullName).to.be.equal(1);
+      expect(response.fullName).to.be.equal(fullName);
     });
   });
 });
