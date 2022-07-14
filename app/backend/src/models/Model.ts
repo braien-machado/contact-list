@@ -5,9 +5,19 @@ const prisma = new PrismaClient();
 export default class ContactModel {
   static async getContacts() {
     const contacts = await prisma.contact.findMany({
-      include: {
-        phoneNumbers: true,
-        emails: true,
+      select: {
+        id: true,
+        fullName: true,
+        phoneNumbers: {
+          select: {
+            phoneNumber: true, whatsapp: true, id: true,
+          },
+        },
+        emails: {
+          select: {
+            email: true, id: true,
+          },
+        },
       },
     });
     return contacts;
