@@ -3,9 +3,7 @@ import IPhone from './IPhone';
 
 interface IContact {
   id?: number;
-  fullName: string;
-  createdAt?: Date;
-  updateAt?: Date;
+  fullName?: string;
   phoneNumbers?: IPhone[];
   emails?: IEmail[];
 }

@@ -7,7 +7,7 @@ const contactData: Prisma.ContactCreateInput[] = [
     fullName: 'Braien Machado',
     phoneNumbers: {
       create: {
-        phoneNumber: '22992444720',
+        phoneNumber: '+5522992444720',
         whatsapp: true,
       },
     },
@@ -21,7 +21,7 @@ const contactData: Prisma.ContactCreateInput[] = [
     fullName: 'Braien',
     phoneNumbers: {
       create: {
-        phoneNumber: '22992444721',
+        phoneNumber: '+5522992444721',
         whatsapp: true,
       },
     },

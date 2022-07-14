@@ -23,15 +23,14 @@ export default class EmailMiddleware {
       });
     }
 
-    const contact = await EmailService.getEmailByParam(email, 'email');
+    const emailInUse = await EmailService.getEmailByParam(email, 'email');
 
-    if (contact !== null) {
-      return next({
-        code: StatusCodes.CONFLICT,
-        message: 'Email is already in use.',
-      });
+    if (!emailInUse) {
+      next();
     }
-
-    next();
+    return next({
+      code: StatusCodes.CONFLICT,
+      message: 'Email is already in use.',
+    });
   }
 }

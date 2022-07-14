@@ -1,9 +1,7 @@
 interface IEmail {
   id?: number;
-  email: string;
-  createdAt?: Date;
-  updateAt?: Date;
-  ownerId: number;
+  email?: string;
+  ownerId?: number;
 }
 
 export default IEmail;
