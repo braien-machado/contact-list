@@ -1,3 +1,4 @@
+/* eslint-disable mocha/max-top-level-suites */
 /* eslint-disable max-lines-per-function */
 import 'mocha';
 import sinon, { SinonStub } from 'sinon';
@@ -133,6 +134,54 @@ describe('POST /phone', () => {
 
     it('should have new email in body', async () => {
       expect(response.body).to.be.deep.equal(mockedPhone);
+    });
+  });
+});
+
+describe('DELETE /phone/:id', () => {
+  describe('with invalid id', () => {
+    before(async () => {
+      getPhoneStub = sinon.stub(PhoneService, 'getPhoneByParam').resolves(null);
+
+      response = await chai
+        .request(app)
+        .delete('/phone/99999')
+        .send({});
+    });
+
+    after(() => {
+      getPhoneStub.restore();
+    });
+
+    it('should have status 404', async () => {
+      expect(response).to.have.status(404);
+    });
+
+    it('should have message \'Phone not found\'', async () => {
+      expect(response.body.message).to.be.equal('Phone not found.');
+    });
+  });
+
+  describe('with valid id', () => {
+    let deletePhoneStub: SinonStub;
+
+    before(async () => {
+      getPhoneStub = sinon.stub(PhoneService, 'getPhoneByParam').resolves(mockedPhone);
+      deletePhoneStub = sinon.stub(PhoneService, 'deletePhoneById').resolves();
+
+      response = await chai
+        .request(app)
+        .delete('/phone/1')
+        .send({});
+    });
+
+    after(() => {
+      getPhoneStub.restore();
+      deletePhoneStub.restore();
+    });
+
+    it('should have status 204', async () => {
+      expect(response).to.have.status(204);
     });
   });
 });
