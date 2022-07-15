@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node ./dist/src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -r ts-node/register ./src/tests/**/*$NAME*.{test,spec}.ts -t 10000 --exit",
+    "test:coverage": "nyc npm run test",
+    "test:coverage:json": "nyc --reporter=json-summary npm run test",
     "dev": "ts-node-dev src/server.ts",
     "lint": "eslint ./src --ext .ts",
     "prettier": "prettier 'src/**/*.ts'",
@@ -25,19 +27,28 @@
   },
   "homepage": "https://github.com/braien-machado/contact-list#readme",
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
+    "@types/chai": "^4.3.1",
+    "@types/chai-http": "^4.2.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/mocha": "^9.1.1",
     "@types/node": "^18.0.3",
+    "@types/sinon": "^10.0.12",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
     "eslint": "^8.19.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-mocha": "^10.0.5",
     "eslint-plugin-sonarjs": "^0.13.0",
+    "mocha": "^10.0.0",
     "prettier": "2.7.1",
     "prisma": "^4.0.0",
+    "sinon": "^14.0.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.7.4"
   },
@@ -47,7 +58,8 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
-    "http-status-codes": "^2.2.0"
+    "http-status-codes": "^2.2.0",
+    "nyc": "^15.1.0"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

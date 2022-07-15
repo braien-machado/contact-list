@@ -55,6 +55,7 @@ export default class PhoneMiddleware {
     const phoneInUse = await PhoneService.getPhoneByParam(phoneNumber, 'phoneNumber');
 
     if (!phoneInUse) return next();
+
     return next({
       code: StatusCodes.CONFLICT,
       message: 'Phone is already in use.',
