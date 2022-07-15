@@ -17,20 +17,6 @@ const contactData: Prisma.ContactCreateInput[] = [
       },
     },
   },
-  {
-    fullName: 'Braien',
-    phoneNumbers: {
-      create: {
-        phoneNumber: '+5522992444721',
-        whatsapp: true,
-      },
-    },
-    emails: {
-      create: {
-        email: 'braienmp@hotmail.com',
-      },
-    },
-  },
 ];
 
 async function main() {
