@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "prestart": "npm run build",
+    "prestart": "npm run build && npm run db:init",
     "start": "node ./dist/src/server.js",
     "test": "mocha -r ts-node/register ./src/tests/**/*$NAME*.{test,spec}.ts -t 10000 --exit",
     "test:coverage": "nyc npm run test",
@@ -14,7 +14,7 @@
     "lint": "eslint ./src --ext .ts",
     "prettier": "prettier 'src/**/*.ts'",
     "prettier:fix": "prettier --write 'src/**/*.ts'",
-    "db:reset": "npx prisma migrate reset"
+    "db:init": "npx prisma migrate dev --name init"
   },
   "repository": {
     "type": "git",
