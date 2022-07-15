@@ -32,6 +32,23 @@ describe('POST /', () => {
     });
   });
 
+  describe('with invalid fullName', () => {
+    before(async () => {
+      response = await chai
+        .request(app)
+        .post('/')
+        .send({ fullName: true });
+    });
+
+    it('should have status 400', async () => {
+      expect(response).to.have.status(400);
+    });
+
+    it('should have message \'fullName must be a string.\'', async () => {
+      expect(response.body.message).to.be.equal('fullName must be a string.');
+    });
+  });
+
   describe('with valid fullName', () => {
     before(async () => {
       stub = sinon.stub(ContactService, 'createContact').resolves(newContact);
@@ -76,5 +93,53 @@ describe('GET /', () => {
 
   it('should have contacts in body', async () => {
     expect(response.body.result).to.be.deep.equal(mockedContacts);
+  });
+});
+
+describe('DELETE /:id', () => {
+  describe('with invalid id', () => {
+    before(async () => {
+      stub = sinon.stub(ContactService, 'getContactById').resolves(null);
+
+      response = await chai
+        .request(app)
+        .delete('/99999')
+        .send({});
+    });
+
+    after(() => {
+      stub.restore();
+    });
+
+    it('should have status 404', async () => {
+      expect(response).to.have.status(404);
+    });
+
+    it('should have message \'Contact not found\'', async () => {
+      expect(response.body.message).to.be.equal('Contact not found');
+    });
+  });
+
+  describe('with valid id', () => {
+    let stubTwo: SinonStub;
+
+    before(async () => {
+      stub = sinon.stub(ContactService, 'getContactById').resolves(mockedContacts[0]);
+      stubTwo = sinon.stub(ContactService, 'deleteContactById').resolves();
+
+      response = await chai
+        .request(app)
+        .delete('/1')
+        .send({});
+    });
+
+    after(() => {
+      stub.restore();
+      stubTwo.restore();
+    });
+
+    it('should have status 204', async () => {
+      expect(response).to.have.status(204);
+    });
   });
 });
