@@ -1,3 +1,4 @@
+/* eslint-disable mocha/max-top-level-suites */
 /* eslint-disable max-lines-per-function */
 import 'mocha';
 import sinon, { SinonStub } from 'sinon';
@@ -145,6 +146,87 @@ describe('POST /email', () => {
 
     it('should have new email in body', async () => {
       expect(response.body).to.be.deep.equal(mockedEmail);
+    });
+  });
+});
+
+describe('DELETE /email/:id', () => {
+  describe('with invalid id', () => {
+    before(async () => {
+      getEmailStub = sinon.stub(EmailService, 'getEmailByParam').resolves(null);
+
+      response = await chai
+        .request(app)
+        .delete('/email/99999')
+        .send({});
+    });
+
+    after(() => {
+      getEmailStub.restore();
+    });
+
+    it('should have status 404', async () => {
+      expect(response).to.have.status(404);
+    });
+
+    it('should have message \'Email not found\'', async () => {
+      expect(response.body.message).to.be.equal('Email not found');
+    });
+  });
+
+  describe('with valid id', () => {
+    let deleteEmailStub: SinonStub;
+
+    before(async () => {
+      getEmailStub = sinon.stub(EmailService, 'getEmailByParam').resolves(mockedEmail);
+      deleteEmailStub = sinon.stub(EmailService, 'deleteEmailById').resolves();
+
+      response = await chai
+        .request(app)
+        .delete('/email/1')
+        .send({});
+    });
+
+    after(() => {
+      getEmailStub.restore();
+      deleteEmailStub.restore();
+    });
+
+    it('should have status 204', async () => {
+      expect(response).to.have.status(204);
+    });
+  });
+});
+
+describe('PATCH /email/:id', () => {
+  describe('with valid id and body', () => {
+    let updateEmailStub: SinonStub;
+
+    before(async () => {
+      getEmailStub = sinon.stub(EmailService, 'getEmailByParam')
+        .onFirstCall()
+        .resolves(mockedEmail)
+        .onSecondCall()
+        .resolves(null);
+      updateEmailStub = sinon.stub(EmailService, 'updateEmailById').resolves();
+
+      response = await chai
+        .request(app)
+        .patch('/email/1')
+        .send({ email: 'updated@email.com' });
+    });
+
+    after(() => {
+      getEmailStub.restore();
+      updateEmailStub.restore();
+    });
+
+    it('should have status 200', async () => {
+      expect(response).to.have.status(200);
+    });
+
+    it('should have message \'Email has been updated successfully\'', async () => {
+      expect(response.body.message).to.be.equal('Email has been updated successfully');
     });
   });
 });

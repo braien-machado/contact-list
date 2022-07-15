@@ -121,11 +121,11 @@ describe('DELETE /:id', () => {
   });
 
   describe('with valid id', () => {
-    let stubTwo: SinonStub;
+    let deleteContactStub: SinonStub;
 
     before(async () => {
       stub = sinon.stub(ContactService, 'getContactById').resolves(mockedContacts[0]);
-      stubTwo = sinon.stub(ContactService, 'deleteContactById').resolves();
+      deleteContactStub = sinon.stub(ContactService, 'deleteContactById').resolves();
 
       response = await chai
         .request(app)
@@ -135,7 +135,7 @@ describe('DELETE /:id', () => {
 
     after(() => {
       stub.restore();
-      stubTwo.restore();
+      deleteContactStub.restore();
     });
 
     it('should have status 204', async () => {
@@ -146,11 +146,11 @@ describe('DELETE /:id', () => {
 
 describe('PATCH /:id', () => {
   describe('with valid id and body', () => {
-    let stubTwo: SinonStub;
+    let updateContactStub: SinonStub;
 
     before(async () => {
       stub = sinon.stub(ContactService, 'getContactById').resolves(mockedContacts[0]);
-      stubTwo = sinon.stub(ContactService, 'updateContactById').resolves();
+      updateContactStub = sinon.stub(ContactService, 'updateContactById').resolves();
 
       response = await chai
         .request(app)
@@ -160,10 +160,10 @@ describe('PATCH /:id', () => {
 
     after(() => {
       stub.restore();
-      stubTwo.restore();
+      updateContactStub.restore();
     });
 
-    it('should have status 204', async () => {
+    it('should have status 200', async () => {
       expect(response).to.have.status(200);
     });
 
