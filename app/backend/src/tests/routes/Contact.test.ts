@@ -172,3 +172,26 @@ describe('PATCH /:id', () => {
     });
   });
 });
+
+describe('Error Middleware default', () => {
+  before(async () => {
+    stub = sinon.stub(ContactService, 'getContacts').throws();
+
+    response = await chai
+      .request(app)
+      .get('/')
+      .send({});
+  });
+
+  after(() => {
+    stub.restore();
+  });
+
+  it('should have status 500', async () => {
+    expect(response).to.have.status(500);
+  });
+
+  it('should have error message \'Something went wrong.\'', async () => {
+    expect(response.body.error).to.be.equal('Something went wrong.');
+  });
+});
