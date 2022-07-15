@@ -1,28 +1,26 @@
-import React from 'react';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import Header from './components/Header';
 import GlobalStyle from './style';
+import { getContacts } from './helpers/api';
+import IContact from './interfaces/IContact';
+import Table from './components/Table';
 
 function App() {
+  const [contacts, setContacts] = useState([] as IContact[]);
+
+  useEffect(() => {
+    async function fetchApi() {
+      const result = await getContacts();
+      setContacts(result);
+    }
+    fetchApi();
+  }, []);
+
   return (
     <div className="App">
       <GlobalStyle />
-      <header>Contact List</header>
-      <table>
-        <thead>
-          <tr>
-            <th>Contato</th>
-            <th>Telefone</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Braien</td>
-            <td>+5522992444720</td>
-            <td>braienmp@outlook.com</td>
-          </tr>
-        </tbody>
-      </table>
+      <Header />
+      <Table contacts={contacts} />
     </div>
   );
 }
