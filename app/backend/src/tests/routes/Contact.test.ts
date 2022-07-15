@@ -143,3 +143,32 @@ describe('DELETE /:id', () => {
     });
   });
 });
+
+describe('PATCH /:id', () => {
+  describe('with valid id and body', () => {
+    let stubTwo: SinonStub;
+
+    before(async () => {
+      stub = sinon.stub(ContactService, 'getContactById').resolves(mockedContacts[0]);
+      stubTwo = sinon.stub(ContactService, 'updateContactById').resolves();
+
+      response = await chai
+        .request(app)
+        .patch('/1')
+        .send({ fullName: 'valid name' });
+    });
+
+    after(() => {
+      stub.restore();
+      stubTwo.restore();
+    });
+
+    it('should have status 204', async () => {
+      expect(response).to.have.status(200);
+    });
+
+    it('should have message \'Contact has been updated successfully\'', async () => {
+      expect(response.body.message).to.be.equal('Contact has been updated successfully');
+    });
+  });
+});
