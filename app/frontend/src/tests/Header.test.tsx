@@ -43,6 +43,8 @@ describe('Header component', () => {
 
     userEvent.type(nameInput, 'name');
     await act(async () => userEvent.click(addContactBtn));
+
+    expect(mockCreateContact).toHaveBeenCalledTimes(1);
     expect(mockUpdateList).toHaveBeenCalledTimes(1);
   });
 
