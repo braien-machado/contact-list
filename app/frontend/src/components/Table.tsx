@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import IContact from '../interfaces/IContact';
 import TableHead from './TableHead';
 import TableRow from './TableRow';
@@ -8,11 +9,24 @@ interface TableProps {
   updateList: () => void;
 }
 
+const MainContent = styled.table`
+  width: 100vw;
+  padding: 20px;
+
+  th {
+    text-align: left;
+  }
+
+  td {
+    padding: 1em 0;
+  }
+`;
+
 export default function Table(props: TableProps) {
   const { contacts, updateList } = props;
 
   return (
-    <table>
+    <MainContent>
       <TableHead />
       <tbody>
         {
@@ -21,6 +35,6 @@ export default function Table(props: TableProps) {
           ))
         }
       </tbody>
-    </table>
+    </MainContent>
   );
 }
