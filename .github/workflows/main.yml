@@ -4,11 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize]
 
-
 jobs:
-  ESLint-Evaluator:
+  ESLint-Backend-Evaluator:
     runs-on: ubuntu-latest
-    name: ESLint
+    name: ESLint-Backend
     steps:
       - name: Fetch project repository
         uses: actions/checkout@v2
@@ -18,3 +17,29 @@ jobs:
           cd app/backend
           npm i
           npm run lint
+
+  ESLint-Frontend-Evaluator:
+    runs-on: ubuntu-latest
+    name: ESLint-Frontend
+    steps:
+      - name: Fetch project repository
+        uses: actions/checkout@v2
+
+      - name: ESLint evaluator
+        run: |
+          cd app/frontend
+          npm i
+          npm run lint
+  
+  Backend-Tests:
+    runs-on: ubuntu-latest
+    name: Backend Tests
+    steps:
+      - name: Fetch project repository
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: |
+          cd app/backend
+          npm i
+          npm test
