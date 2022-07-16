@@ -3,12 +3,14 @@ import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TableRow from '../components/TableRow';
 import mockedContacts from './mocks/contact';
-import { deleteContact } from '../helpers/api';
+import { createEmail, createPhone, deleteContact } from '../helpers/api';
 
 jest.mock('../helpers/api');
 
 const mockUpdateList = jest.fn();
 const mockDeleteContact = deleteContact as jest.MockedFunction<typeof deleteContact>;
+const mockCreatePhone = createPhone as jest.MockedFunction<typeof createPhone>;
+const mockCreateEmail = createEmail as jest.MockedFunction<typeof createEmail>;
 
 describe('TableRow component', () => {
   beforeEach(() => {
@@ -135,5 +137,73 @@ describe('TableRow component', () => {
     expect(addInput).not.toBeInTheDocument();
     expect(confirmBtn).not.toBeInTheDocument();
     expect(cancelBtn).not.toBeInTheDocument();
+  });
+
+  it('email add confirm button click should call the expected functions when email input has a valid email', async () => {
+    mockCreateEmail.mockResolvedValue(true);
+
+    const addBtn = screen.getByTestId(`email-add-button-${mockedContacts[1].id}`);
+
+    userEvent.click(addBtn);
+
+    const addInput = screen.getByPlaceholderText(/email@email\.com/i);
+    const confirmBtn = screen.getByTestId(`email-add-confirm-button-${mockedContacts[1].id}`);
+
+    expect(confirmBtn).toBeDisabled();
+
+    userEvent.type(addInput, 'test@mail.com');
+
+    expect(confirmBtn).not.toBeDisabled();
+
+    await act(async () => userEvent.click(confirmBtn));
+
+    expect(mockCreateEmail).toHaveBeenCalledTimes(1);
+    expect(mockUpdateList).toHaveBeenCalledTimes(1);
+  });
+
+  it('adding new email should hide expected elements', async () => {
+    mockCreateEmail.mockResolvedValue(true);
+
+    const addBtn = screen.getByTestId(`email-add-button-${mockedContacts[1].id}`);
+
+    userEvent.click(addBtn);
+
+    const addInput = screen.getByPlaceholderText(/email@email\.com/i);
+    const confirmBtn = screen.getByTestId(`email-add-confirm-button-${mockedContacts[1].id}`);
+    const cancelBtn = screen.getByTestId(`email-add-cancel-button-${mockedContacts[1].id}`);
+
+    expect(addInput).toBeInTheDocument();
+    expect(confirmBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
+
+    userEvent.type(addInput, 'test@mail.com');
+    await act(async () => userEvent.click(confirmBtn));
+
+    expect(addInput).not.toBeInTheDocument();
+    expect(confirmBtn).not.toBeInTheDocument();
+    expect(cancelBtn).not.toBeInTheDocument();
+  });
+
+  it('adding new email should not hide elements when there is an error in request', async () => {
+    mockCreateEmail.mockResolvedValue(false);
+
+    const addBtn = screen.getByTestId(`email-add-button-${mockedContacts[1].id}`);
+
+    userEvent.click(addBtn);
+
+    const addInput = screen.getByPlaceholderText(/email@email\.com/i);
+    const confirmBtn = screen.getByTestId(`email-add-confirm-button-${mockedContacts[1].id}`);
+    const cancelBtn = screen.getByTestId(`email-add-cancel-button-${mockedContacts[1].id}`);
+
+    expect(addInput).toBeInTheDocument();
+    expect(confirmBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
+
+    userEvent.type(addInput, 'test@mail.com');
+    await act(async () => userEvent.click(confirmBtn));
+
+    expect(addInput).toBeInTheDocument();
+    expect(confirmBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
   });
 });
