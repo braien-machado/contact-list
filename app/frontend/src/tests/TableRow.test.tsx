@@ -96,6 +96,34 @@ describe('TableRow component', () => {
     expect(cancelBtn).toBeInTheDocument();
   });
 
+  it('phone add cancel button should render expected elements', async () => {
+    render(
+      <table>
+        <tbody>
+          <TableRow updateList={mockUpdateList} contact={mockedContacts[1]} />
+        </tbody>
+      </table>,
+    );
+
+    const addBtn = screen.getByTestId(`phone-add-button-${mockedContacts[1].id}`);
+
+    userEvent.click(addBtn);
+
+    const addInput = screen.getByPlaceholderText(/\+55999999999/i);
+    const confirmBtn = screen.getByTestId(`phone-add-confirm-button-${mockedContacts[1].id}`);
+    const cancelBtn = screen.getByTestId(`phone-add-cancel-button-${mockedContacts[1].id}`);
+
+    expect(addInput).toBeInTheDocument();
+    expect(confirmBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
+
+    userEvent.click(cancelBtn);
+
+    expect(addInput).not.toBeInTheDocument();
+    expect(confirmBtn).not.toBeInTheDocument();
+    expect(cancelBtn).not.toBeInTheDocument();
+  });
+
   it('email add button should render expected elements', async () => {
     render(
       <table>
@@ -116,5 +144,33 @@ describe('TableRow component', () => {
     expect(addInput).toBeInTheDocument();
     expect(confirmBtn).toBeInTheDocument();
     expect(cancelBtn).toBeInTheDocument();
+  });
+
+  it('email add cancel button should hide expected elements', async () => {
+    render(
+      <table>
+        <tbody>
+          <TableRow updateList={mockUpdateList} contact={mockedContacts[1]} />
+        </tbody>
+      </table>,
+    );
+
+    const addBtn = screen.getByTestId(`email-add-button-${mockedContacts[1].id}`);
+
+    userEvent.click(addBtn);
+
+    const addInput = screen.getByPlaceholderText(/email@email\.com/i);
+    const confirmBtn = screen.getByTestId(`email-add-confirm-button-${mockedContacts[1].id}`);
+    const cancelBtn = screen.getByTestId(`email-add-cancel-button-${mockedContacts[1].id}`);
+
+    expect(addInput).toBeInTheDocument();
+    expect(confirmBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
+
+    userEvent.click(cancelBtn);
+
+    expect(addInput).not.toBeInTheDocument();
+    expect(confirmBtn).not.toBeInTheDocument();
+    expect(cancelBtn).not.toBeInTheDocument();
   });
 });
