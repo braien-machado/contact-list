@@ -1,0 +1,22 @@
+{
+  "name": "contact-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compose:up": "(cd app && docker-compose up -d --build)",
+    "compose:down": "(cd app && docker-compose down --remove-orphans)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/braien-machado/contact-list.git"
+  },
+  "keywords": [],
+  "author": "Braien Machado de Paula",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/braien-machado/contact-list/issues"
+  },
+  "homepage": "https://github.com/braien-machado/contact-list#readme"
+}
