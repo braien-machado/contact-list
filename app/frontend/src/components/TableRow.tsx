@@ -155,10 +155,11 @@ export default function TableRow(props: TableRowProps) {
               <ConfirmButton
                 disabled={phoneBtnDisabled}
                 onClick={addPhone}
+                data-testid={`phone-add-confirm-button-${id}`}
               >
                 V
               </ConfirmButton>
-              <CancelButton onClick={closePhoneInput}>X</CancelButton>
+              <CancelButton data-testid={`phone-add-cancel-button-${id}`} onClick={closePhoneInput}>X</CancelButton>
             </InputContainer>
           ) : <TableButton data-testid={`phone-add-button-${id}`} onClick={openPhoneInput}>+</TableButton>}
         </ListContainer>
@@ -172,10 +173,11 @@ export default function TableRow(props: TableRowProps) {
               <ConfirmButton
                 disabled={emailBtnDisabled}
                 onClick={addEmail}
+                data-testid={`email-add-confirm-button-${id}`}
               >
                 V
               </ConfirmButton>
-              <CancelButton onClick={closeEmailInput}>X</CancelButton>
+              <CancelButton data-testid={`email-add-cancel-button-${id}`} onClick={closeEmailInput}>X</CancelButton>
             </InputContainer>
           ) : <TableButton data-testid={`email-add-button-${id}`} onClick={openEmailInput}>+</TableButton>}
         </ListContainer>

@@ -12,6 +12,19 @@ const mockPatchEmail = patchEmail as jest.MockedFunction<typeof patchEmail>;
 const mockUpdateList = jest.fn();
 
 describe('EmailContainer component', () => {
+  it('should not render the expected elements', () => {
+    render(<EmailContainer updateList={mockUpdateList} email={mockedEmail} />);
+    const emailInput = screen.queryByPlaceholderText(/test@test.com/i);
+    const removeBtn = screen.queryByRole('button', { name: /remove/i });
+    const editBtn = screen.queryByRole('button', { name: /edit/i });
+    const cancelBtn = screen.queryByRole('button', { name: /cancel/i });
+
+    expect(emailInput).not.toBeInTheDocument();
+    expect(removeBtn).not.toBeInTheDocument();
+    expect(editBtn).not.toBeInTheDocument();
+    expect(cancelBtn).not.toBeInTheDocument();
+  });
+
   it('menu button click should render the expected elements', () => {
     render(<EmailContainer updateList={mockUpdateList} email={mockedEmail} />);
     const email = screen.queryByTestId(`email-span-${mockedEmail.id}`);
