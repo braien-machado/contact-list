@@ -11,7 +11,7 @@ const mockUpdateList = jest.fn();
 const mockDeleteContact = deleteContact as jest.MockedFunction<typeof deleteContact>;
 
 describe('TableRow component', () => {
-  it('should render the expected elements', () => {
+  beforeEach(() => {
     render(
       <table>
         <tbody>
@@ -19,7 +19,9 @@ describe('TableRow component', () => {
         </tbody>
       </table>,
     );
+  });
 
+  it('should render the expected elements', () => {
     const name = screen.getByTestId(`contact-name-${mockedContacts[1].id}`);
     const email = screen.getByTestId(`email-span-${mockedContacts[1].emails[0].id}`);
     const emailMenuBtn = screen.getByTestId(`email-menu-button-${mockedContacts[1].emails[0].id}`);
@@ -56,13 +58,6 @@ describe('TableRow component', () => {
 
   it('remove contact button should call the expected functions', async () => {
     mockDeleteContact.mockResolvedValue();
-    render(
-      <table>
-        <tbody>
-          <TableRow updateList={mockUpdateList} contact={mockedContacts[1]} />
-        </tbody>
-      </table>,
-    );
 
     const contactRemoveBtn = screen.getByTestId(`contact-remove-button-${mockedContacts[1].id}`);
 
@@ -75,14 +70,6 @@ describe('TableRow component', () => {
   });
 
   it('phone add button should render expected elements', async () => {
-    render(
-      <table>
-        <tbody>
-          <TableRow updateList={mockUpdateList} contact={mockedContacts[1]} />
-        </tbody>
-      </table>,
-    );
-
     const addBtn = screen.getByTestId(`phone-add-button-${mockedContacts[1].id}`);
 
     userEvent.click(addBtn);
@@ -97,14 +84,6 @@ describe('TableRow component', () => {
   });
 
   it('phone add cancel button should render expected elements', async () => {
-    render(
-      <table>
-        <tbody>
-          <TableRow updateList={mockUpdateList} contact={mockedContacts[1]} />
-        </tbody>
-      </table>,
-    );
-
     const addBtn = screen.getByTestId(`phone-add-button-${mockedContacts[1].id}`);
 
     userEvent.click(addBtn);
@@ -125,14 +104,6 @@ describe('TableRow component', () => {
   });
 
   it('email add button should render expected elements', async () => {
-    render(
-      <table>
-        <tbody>
-          <TableRow updateList={mockUpdateList} contact={mockedContacts[1]} />
-        </tbody>
-      </table>,
-    );
-
     const addBtn = screen.getByTestId(`email-add-button-${mockedContacts[1].id}`);
 
     userEvent.click(addBtn);
@@ -147,14 +118,6 @@ describe('TableRow component', () => {
   });
 
   it('email add cancel button should hide expected elements', async () => {
-    render(
-      <table>
-        <tbody>
-          <TableRow updateList={mockUpdateList} contact={mockedContacts[1]} />
-        </tbody>
-      </table>,
-    );
-
     const addBtn = screen.getByTestId(`email-add-button-${mockedContacts[1].id}`);
 
     userEvent.click(addBtn);
