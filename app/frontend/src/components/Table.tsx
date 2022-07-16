@@ -5,10 +5,11 @@ import TableRow from './TableRow';
 
 interface TableProps {
   contacts: IContact[];
+  updateList: () => void;
 }
 
 export default function Table(props: TableProps) {
-  const { contacts } = props;
+  const { contacts, updateList } = props;
 
   return (
     <table>
@@ -16,7 +17,7 @@ export default function Table(props: TableProps) {
       <tbody>
         {
           contacts.map((contact: IContact) => (
-            <TableRow key={contact.id} contact={contact} />
+            <TableRow key={contact.id} contact={contact} updateList={updateList} />
           ))
         }
       </tbody>

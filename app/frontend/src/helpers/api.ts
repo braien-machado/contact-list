@@ -10,8 +10,8 @@ export const getContacts = async () => {
   return contacts as IContact[];
 };
 
-export const deleteTask = async (id: number) => {
-  await axios.delete(`http://localhost:3001/task/${id}`);
+export const deleteContact = async (id: number) => {
+  await axios.delete(`http://localhost:3001/${id}`);
 };
 
 export const createContact = async (fullName: string) => {

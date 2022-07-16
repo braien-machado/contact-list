@@ -12,7 +12,7 @@ const LoaderContainer = styled.div`
   .loader-bg {
     background-color: white;
     height: 100vh;
-    opacity: 0.4;
+    opacity: 0.5;
     position: absolute;
     width: 100vw;
   }

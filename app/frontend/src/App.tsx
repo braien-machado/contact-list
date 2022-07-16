@@ -34,7 +34,7 @@ function App() {
         )
       }
       <Header updateList={updateList} />
-      <Table contacts={contacts} />
+      <Table contacts={contacts} updateList={updateList} />
     </div>
   );
 }
