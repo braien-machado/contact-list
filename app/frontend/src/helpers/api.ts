@@ -16,6 +16,10 @@ export const deleteContact = async (id: number) => {
   await axios.delete(`http://localhost:3001/${id}`);
 };
 
+export const deleteEmail = async (id: number) => {
+  await axios.delete(`http://localhost:3001/email/${id}`);
+};
+
 export const createContact = async (fullName: string) => {
   await axios.post('http://localhost:3001/', { fullName })
     .catch((error) => {

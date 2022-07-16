@@ -127,7 +127,7 @@ export default function TableRow(props: TableRowProps) {
     }
   };
 
-  const handleDelete = async () => {
+  const removeContact = async () => {
     await deleteContact(id);
     updateList();
   };
@@ -144,7 +144,7 @@ export default function TableRow(props: TableRowProps) {
 
   const spanEmails = () => (
     emails.map((email) => (
-      <EmailContainer email={email} key={email.id} />
+      <EmailContainer email={email} key={email.id} updateList={updateList} />
     )));
   // update name, email, phone and whatsapp
   // delete email, phone
@@ -190,7 +190,7 @@ export default function TableRow(props: TableRowProps) {
         </ListContainer>
       </td>
       <ButtonTD>
-        <TableButton type="button" onClick={handleDelete}>X</TableButton>
+        <TableButton type="button" onClick={removeContact}>X</TableButton>
       </ButtonTD>
     </tr>
   );
