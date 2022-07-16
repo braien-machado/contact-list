@@ -105,6 +105,74 @@ describe('TableRow component', () => {
     expect(cancelBtn).not.toBeInTheDocument();
   });
 
+  it('phone add confirm button click should call the expected functions when phone input has a valid phone', async () => {
+    mockCreatePhone.mockResolvedValue(true);
+
+    const addBtn = screen.getByTestId(`phone-add-button-${mockedContacts[1].id}`);
+
+    userEvent.click(addBtn);
+
+    const addInput = screen.getByPlaceholderText(/\+55999999999/i);
+    const confirmBtn = screen.getByTestId(`phone-add-confirm-button-${mockedContacts[1].id}`);
+
+    expect(confirmBtn).toBeDisabled();
+
+    userEvent.type(addInput, '+5555555');
+
+    expect(confirmBtn).not.toBeDisabled();
+
+    await act(async () => userEvent.click(confirmBtn));
+
+    expect(mockCreatePhone).toHaveBeenCalledTimes(1);
+    expect(mockUpdateList).toHaveBeenCalledTimes(1);
+  });
+
+  it('adding new phone should hide expected elements', async () => {
+    mockCreatePhone.mockResolvedValue(true);
+
+    const addBtn = screen.getByTestId(`phone-add-button-${mockedContacts[1].id}`);
+
+    userEvent.click(addBtn);
+
+    const addInput = screen.getByPlaceholderText(/\+55999999999/i);
+    const confirmBtn = screen.getByTestId(`phone-add-confirm-button-${mockedContacts[1].id}`);
+    const cancelBtn = screen.getByTestId(`phone-add-cancel-button-${mockedContacts[1].id}`);
+
+    expect(addInput).toBeInTheDocument();
+    expect(confirmBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
+
+    userEvent.type(addInput, '+5555555');
+    await act(async () => userEvent.click(confirmBtn));
+
+    expect(addInput).not.toBeInTheDocument();
+    expect(confirmBtn).not.toBeInTheDocument();
+    expect(cancelBtn).not.toBeInTheDocument();
+  });
+
+  it('adding new phone should not hide elements when there is an error in request', async () => {
+    mockCreatePhone.mockResolvedValue(false);
+
+    const addBtn = screen.getByTestId(`phone-add-button-${mockedContacts[1].id}`);
+
+    userEvent.click(addBtn);
+
+    const addInput = screen.getByPlaceholderText(/\+55999999999/i);
+    const confirmBtn = screen.getByTestId(`phone-add-confirm-button-${mockedContacts[1].id}`);
+    const cancelBtn = screen.getByTestId(`phone-add-cancel-button-${mockedContacts[1].id}`);
+
+    expect(addInput).toBeInTheDocument();
+    expect(confirmBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
+
+    userEvent.type(addInput, '+5555555');
+    await act(async () => userEvent.click(confirmBtn));
+
+    expect(addInput).toBeInTheDocument();
+    expect(confirmBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
+  });
+
   it('email add button should render expected elements', async () => {
     const addBtn = screen.getByTestId(`email-add-button-${mockedContacts[1].id}`);
 
