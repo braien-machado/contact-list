@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { deleteEmail } from '../helpers/api';
+import React, { useEffect, useState } from 'react';
+import { deleteEmail, patchEmail } from '../helpers/api';
 import IEmail from '../interfaces/IEmail';
 import InfoContainer from '../styles/InfoContainer';
+import Input from '../styles/Input';
 
 interface EmailProps {
   email: IEmail;
@@ -10,28 +11,50 @@ interface EmailProps {
 
 export default function EmailContainer(props: EmailProps) {
   const [isMenuHidden, setIsMenuHidden] = useState(true);
+  const [editDisabled, setEditDisabled] = useState(true);
+  const [updatedEmail, setUpdatedEmail] = useState('');
 
   const { email, updateList } = props;
+
+  useEffect(() => {
+    const emailRegex = /^[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+$/;
+
+    setEditDisabled(!emailRegex.test(updatedEmail) || updatedEmail === email.email);
+  }, [email.email, updatedEmail]);
 
   const removeEmail = async () => {
     await deleteEmail(email.id);
     updateList();
   };
 
+  const editEmail = async () => {
+    const done = await patchEmail(email.id, updatedEmail);
+
+    if (done) {
+      setIsMenuHidden(true);
+      updateList();
+    }
+  };
+
   return (
     <InfoContainer>
-      <span>
-        { email.email }
-      </span>
       {
         isMenuHidden ? (
-          <button type="button" onClick={() => setIsMenuHidden(false)}>...</button>
+          <>
+            <span>
+              { email.email }
+            </span>
+            <button type="button" onClick={() => setIsMenuHidden(false)}>...</button>
+          </>
         ) : (
-          <div>
-            <button type="button">Edit</button>
-            <button type="button" onClick={removeEmail}>Remove</button>
-            <button type="button" onClick={() => setIsMenuHidden(true)}>Cancel</button>
-          </div>
+          <>
+            <Input type="text" placeholder={email.email} onChange={({ target }) => setUpdatedEmail(target.value)} />
+            <div>
+              <button type="button" disabled={editDisabled} onClick={editEmail}>Edit</button>
+              <button type="button" onClick={removeEmail}>Remove</button>
+              <button type="button" onClick={() => setIsMenuHidden(true)}>Cancel</button>
+            </div>
+          </>
         )
       }
     </InfoContainer>

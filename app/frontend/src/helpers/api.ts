@@ -20,6 +20,14 @@ export const deleteEmail = async (id: number) => {
   await axios.delete(`http://localhost:3001/email/${id}`);
 };
 
+export const patchEmail = async (id: number, email: string) => {
+  const updated = await axios.patch(`http://localhost:3001/email/${id}`, { email })
+    .then(() => true)
+    .catch(() => false);
+
+  return updated;
+};
+
 export const createContact = async (fullName: string) => {
   await axios.post('http://localhost:3001/', { fullName })
     .catch((error) => {
