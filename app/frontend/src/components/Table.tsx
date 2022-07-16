@@ -27,6 +27,14 @@ const MainContent = styled.table`
 export default function Table(props: TableProps) {
   const { contacts, updateList } = props;
 
+  if (contacts.length === 0) {
+    return (
+      <div>
+        <p>You have not registered any contacts yet.</p>
+      </div>
+    );
+  }
+
   return (
     <MainContent>
       <TableHead />

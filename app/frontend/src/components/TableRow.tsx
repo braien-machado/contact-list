@@ -145,7 +145,7 @@ export default function TableRow(props: TableRowProps) {
 
   return (
     <tr>
-      <td>{ fullName }</td>
+      <td data-testid={`contact-name-${id}`}>{ fullName }</td>
       <td>
         <ListContainer>
           {spanPhones()}

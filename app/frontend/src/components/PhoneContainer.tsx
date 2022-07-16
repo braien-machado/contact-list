@@ -52,15 +52,15 @@ export default function PhoneContainer(props: PhoneProps) {
       {
         isMenuHidden ? (
           <>
-            <span>
+            <span data-testid={`phone-span-${phone.id}`}>
               { phone.phoneNumber }
             </span>
             {phone.whatsapp && (<Whatsapp />)}
-            <button type="button" onClick={() => setIsMenuHidden(false)}>...</button>
+            <button data-testid={`phone-menu-button-${phone.id}`} type="button" onClick={() => setIsMenuHidden(false)}>...</button>
           </>
         ) : (
           <>
-            <Input type="text" placeholder={phone.phoneNumber} onChange={({ target }) => setUpdatedPhone({ ...updatedPhone, phoneNumber: target.value })} />
+            <Input type="text" data-testid={`phone-input-${phone.id}`} placeholder={phone.phoneNumber} onChange={({ target }) => setUpdatedPhone({ ...updatedPhone, phoneNumber: target.value })} />
             <label htmlFor="wpp-select">
               whatsapp
               <select
