@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import { createEmail, createPhone, deleteContact } from '../helpers/api';
 import IContact from '../interfaces/IContact';
 import Button from '../styles/Button';
-import InfoContainer from '../styles/InfoContainer';
 import Input from '../styles/Input';
 import EmailContainer from './EmailContainer';
-import Whatsapp from './WhatsappIcon';
+import PhoneContainer from './PhoneContainer';
 
 interface TableRowProps {
   contact: IContact;
@@ -134,12 +133,7 @@ export default function TableRow(props: TableRowProps) {
 
   const spanPhones = () => (
     phoneNumbers.map((phone) => (
-      <InfoContainer key={phone.id}>
-        <span>
-          { phone.phoneNumber }
-        </span>
-        {phone.whatsapp && (<Whatsapp />)}
-      </InfoContainer>
+      <PhoneContainer phone={phone} key={phone.id} updateList={updateList} />
     )));
 
   const spanEmails = () => (

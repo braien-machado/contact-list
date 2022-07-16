@@ -20,6 +20,18 @@ export const deleteEmail = async (id: number) => {
   await axios.delete(`http://localhost:3001/email/${id}`);
 };
 
+export const deletePhone = async (id: number) => {
+  await axios.delete(`http://localhost:3001/phone/${id}`);
+};
+
+export const patchPhone = async (id: number, phoneObj: Partial<IPhone>) => {
+  const updated = await axios.patch(`http://localhost:3001/phone/${id}`, phoneObj)
+    .then(() => true)
+    .catch(() => false);
+
+  return updated;
+};
+
 export const patchEmail = async (id: number, email: string) => {
   const updated = await axios.patch(`http://localhost:3001/email/${id}`, { email })
     .then(() => true)
