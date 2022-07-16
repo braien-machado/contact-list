@@ -4,9 +4,18 @@ import GlobalStyle from './style';
 import { getContacts } from './helpers/api';
 import IContact from './interfaces/IContact';
 import Table from './components/Table';
+import LoaderComponent from './components/Loader';
 
 function App() {
   const [contacts, setContacts] = useState([] as IContact[]);
+  const [loading, setLoading] = useState(false);
+
+  const updateList = async () => {
+    setLoading(true);
+    const result = await getContacts();
+    setContacts(result);
+    setLoading(false);
+  };
 
   useEffect(() => {
     async function fetchApi() {
@@ -19,7 +28,12 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <Header />
+      {
+        loading && (
+          <LoaderComponent />
+        )
+      }
+      <Header updateList={updateList} />
       <Table contacts={contacts} />
     </div>
   );
