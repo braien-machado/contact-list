@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { deleteContact } from '../helpers/api';
 import IContact from '../interfaces/IContact';
 import Button from '../styles/Button';
+import Whatsapp from './WhatsappIcon';
 
 interface TableRowProps {
   contact: IContact;
@@ -14,13 +15,19 @@ const ButtonTD = styled.td`
   justify-content: center;
 `;
 
-const DeleteButton = styled(Button)`
+const TableButton = styled(Button)`
   align-items: center;
   border-radius: 50%;
   display: flex;
   height: 25px;
   justify-content: center;
   width: 25px;
+`;
+
+const PhoneContainer = styled.div`
+  align-items: center;
+  display: flex;
+  gap: 5px;
 `;
 
 export default function TableRow(props: TableRowProps) {
@@ -39,13 +46,31 @@ export default function TableRow(props: TableRowProps) {
     updateList();
   };
 
+  const spanPhones = () => (
+    phoneNumbers.map((phone) => (
+      <PhoneContainer key={phone.id}>
+        <span>
+          { phone.phoneNumber }
+        </span>
+        {phone.whatsapp && (<Whatsapp />)}
+      </PhoneContainer>
+    )));
+
   return (
     <tr>
       <td>{ fullName }</td>
-      <td>{ phoneNumbers.length > 0 && phoneNumbers[0].phoneNumber }</td>
-      <td>{ emails.length > 0 && emails[0].email }</td>
+      <td>
+        {spanPhones()}
+        <TableButton>+</TableButton>
+      </td>
+      <td>
+        <span>
+          { emails.length > 0 && emails[0].email }
+        </span>
+        <TableButton>+</TableButton>
+      </td>
       <ButtonTD>
-        <DeleteButton type="button" onClick={handleClick}>X</DeleteButton>
+        <TableButton type="button" onClick={handleClick}>X</TableButton>
       </ButtonTD>
     </tr>
   );
