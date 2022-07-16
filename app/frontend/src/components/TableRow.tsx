@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import { createEmail, createPhone, deleteContact } from '../helpers/api';
 import IContact from '../interfaces/IContact';
 import Button from '../styles/Button';
+import InfoContainer from '../styles/InfoContainer';
 import Input from '../styles/Input';
+import EmailContainer from './EmailContainer';
 import Whatsapp from './WhatsappIcon';
-import Check from './CheckIcon';
 
 interface TableRowProps {
   contact: IContact;
@@ -53,12 +54,6 @@ const ConfirmButton = styled(TableButton)`
     border-color: #acacac;
     cursor: default;
   }
-`;
-
-const PhoneContainer = styled.div`
-  align-items: center;
-  display: flex;
-  gap: 5px;
 `;
 
 const InputContainer = styled.div`
@@ -139,23 +134,24 @@ export default function TableRow(props: TableRowProps) {
 
   const spanPhones = () => (
     phoneNumbers.map((phone) => (
-      <PhoneContainer key={phone.id}>
+      <InfoContainer key={phone.id}>
         <span>
           { phone.phoneNumber }
         </span>
         {phone.whatsapp && (<Whatsapp />)}
-      </PhoneContainer>
+      </InfoContainer>
     )));
 
   const spanEmails = () => (
     emails.map((email) => (
-      <PhoneContainer key={email.id}>
-        <span>
-          { email.email }
-        </span>
-      </PhoneContainer>
+      <EmailContainer email={email} key={email.id} />
     )));
-
+  // update name, email, phone and whatsapp
+  // delete email, phone
+  // create phone with whatsapp
+  // test
+  // useContext?
+  // docker
   return (
     <tr>
       <td>{ fullName }</td>
@@ -169,7 +165,7 @@ export default function TableRow(props: TableRowProps) {
                 disabled={phoneBtnDisabled}
                 onClick={addPhone}
               >
-                <Check />
+                V
               </ConfirmButton>
               <CancelButton onClick={closePhoneInput}>X</CancelButton>
             </InputContainer>
@@ -186,7 +182,7 @@ export default function TableRow(props: TableRowProps) {
                 disabled={emailBtnDisabled}
                 onClick={addEmail}
               >
-                <Check />
+                V
               </ConfirmButton>
               <CancelButton onClick={closeEmailInput}>X</CancelButton>
             </InputContainer>
