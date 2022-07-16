@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { createPhone, deleteContact } from '../helpers/api';
+import { createEmail, createPhone, deleteContact } from '../helpers/api';
 import IContact from '../interfaces/IContact';
 import Button from '../styles/Button';
 import Input from '../styles/Input';
@@ -17,7 +17,7 @@ const ButtonTD = styled.td`
   justify-content: center;
 `;
 
-const PhonesContainer = styled.div`
+const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -76,6 +76,10 @@ export default function TableRow(props: TableRowProps) {
   const [newPhone, setNewPhone] = useState('');
   const [phoneBtnDisabled, setPhoneBtnDisabled] = useState(true);
 
+  const [emailInput, setEmailInput] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [emailBtnDisabled, setEmailBtnDisabled] = useState(true);
+
   const {
     contact: {
       id,
@@ -88,9 +92,11 @@ export default function TableRow(props: TableRowProps) {
 
   useEffect(() => {
     const phoneRegex = /^\+[1-9][0-9]\d{1,14}$/;
+    const emailRegex = /^[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+$/;
 
     setPhoneBtnDisabled(!phoneRegex.test(newPhone));
-  }, [newPhone]);
+    setEmailBtnDisabled(!emailRegex.test(newEmail));
+  }, [newPhone, newEmail]);
 
   const openPhoneInput = () => {
     setPhoneInput(true);
@@ -109,6 +115,23 @@ export default function TableRow(props: TableRowProps) {
     }
   };
 
+  const openEmailInput = () => {
+    setEmailInput(true);
+  };
+
+  const closeEmailInput = () => {
+    setEmailInput(false);
+    setNewEmail('');
+  };
+
+  const addEmail = async () => {
+    const done = await createEmail({ email: newEmail, ownerId: id });
+    if (done) {
+      updateList();
+      setNewEmail('');
+    }
+  };
+
   const handleDelete = async () => {
     await deleteContact(id);
     updateList();
@@ -124,11 +147,20 @@ export default function TableRow(props: TableRowProps) {
       </PhoneContainer>
     )));
 
+  const spanEmails = () => (
+    emails.map((email) => (
+      <PhoneContainer key={email.id}>
+        <span>
+          { email.email }
+        </span>
+      </PhoneContainer>
+    )));
+
   return (
     <tr>
       <td>{ fullName }</td>
       <td>
-        <PhonesContainer>
+        <ListContainer>
           {spanPhones()}
           {phoneInput ? (
             <InputContainer>
@@ -142,13 +174,24 @@ export default function TableRow(props: TableRowProps) {
               <CancelButton onClick={closePhoneInput}>X</CancelButton>
             </InputContainer>
           ) : <TableButton onClick={openPhoneInput}>+</TableButton>}
-        </PhonesContainer>
+        </ListContainer>
       </td>
       <td>
-        <span>
-          { emails.length > 0 && emails[0].email }
-        </span>
-        <TableButton>+</TableButton>
+        <ListContainer>
+          {spanEmails()}
+          {emailInput ? (
+            <InputContainer>
+              <TableInput type="text" placeholder="email@email.com" value={newEmail} onChange={({ target }) => setNewEmail(target.value)} />
+              <ConfirmButton
+                disabled={emailBtnDisabled}
+                onClick={addEmail}
+              >
+                <Check />
+              </ConfirmButton>
+              <CancelButton onClick={closeEmailInput}>X</CancelButton>
+            </InputContainer>
+          ) : <TableButton onClick={openEmailInput}>+</TableButton>}
+        </ListContainer>
       </td>
       <ButtonTD>
         <TableButton type="button" onClick={handleDelete}>X</TableButton>
