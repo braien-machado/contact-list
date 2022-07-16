@@ -15,10 +15,12 @@ const MainContent = styled.table`
 
   th {
     text-align: left;
+    padding: 0 10px;
   }
 
   td {
-    padding: 1em 0;
+    padding: 1em 10px;
+    vertical-align: text-top;
   }
 `;
 

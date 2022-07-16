@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { deleteContact } from '../helpers/api';
+import { createPhone, deleteContact } from '../helpers/api';
 import IContact from '../interfaces/IContact';
 import Button from '../styles/Button';
+import Input from '../styles/Input';
 import Whatsapp from './WhatsappIcon';
+import Check from './CheckIcon';
 
 interface TableRowProps {
   contact: IContact;
@@ -15,13 +17,42 @@ const ButtonTD = styled.td`
   justify-content: center;
 `;
 
+const PhonesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
 const TableButton = styled(Button)`
   align-items: center;
   border-radius: 50%;
+  border: none;
   display: flex;
   height: 25px;
   justify-content: center;
   width: 25px;
+`;
+
+const CancelButton = styled(TableButton)`
+  background-color: #c26060;
+
+  &:hover {
+    background-color: #bd3737;
+  }
+`;
+
+const ConfirmButton = styled(TableButton)`
+  background-color: #83b383;
+
+  &:hover {
+    background-color: #42a342;
+  }
+
+  &:disabled {
+    background-color: #acacac;
+    border-color: #acacac;
+    cursor: default;
+  }
 `;
 
 const PhoneContainer = styled.div`
@@ -30,7 +61,21 @@ const PhoneContainer = styled.div`
   gap: 5px;
 `;
 
+const InputContainer = styled.div`
+  align-items: center;
+  display: flex;
+  gap: 5px;
+`;
+
+const TableInput = styled(Input)`
+  width: 150px;
+`;
+
 export default function TableRow(props: TableRowProps) {
+  const [phoneInput, setPhoneInput] = useState(false);
+  const [newPhone, setNewPhone] = useState('');
+  const [phoneBtnDisabled, setPhoneBtnDisabled] = useState(true);
+
   const {
     contact: {
       id,
@@ -41,7 +86,30 @@ export default function TableRow(props: TableRowProps) {
     updateList,
   } = props;
 
-  const handleClick = async () => {
+  useEffect(() => {
+    const phoneRegex = /^\+[1-9][0-9]\d{1,14}$/;
+
+    setPhoneBtnDisabled(!phoneRegex.test(newPhone));
+  }, [newPhone]);
+
+  const openPhoneInput = () => {
+    setPhoneInput(true);
+  };
+
+  const closePhoneInput = () => {
+    setPhoneInput(false);
+    setNewPhone('');
+  };
+
+  const addPhone = async () => {
+    const done = await createPhone({ phoneNumber: newPhone, ownerId: id });
+    if (done) {
+      updateList();
+      setNewPhone('');
+    }
+  };
+
+  const handleDelete = async () => {
     await deleteContact(id);
     updateList();
   };
@@ -60,8 +128,21 @@ export default function TableRow(props: TableRowProps) {
     <tr>
       <td>{ fullName }</td>
       <td>
-        {spanPhones()}
-        <TableButton>+</TableButton>
+        <PhonesContainer>
+          {spanPhones()}
+          {phoneInput ? (
+            <InputContainer>
+              <TableInput type="text" placeholder="+55999999999" value={newPhone} onChange={({ target }) => setNewPhone(target.value)} />
+              <ConfirmButton
+                disabled={phoneBtnDisabled}
+                onClick={addPhone}
+              >
+                <Check />
+              </ConfirmButton>
+              <CancelButton onClick={closePhoneInput}>X</CancelButton>
+            </InputContainer>
+          ) : <TableButton onClick={openPhoneInput}>+</TableButton>}
+        </PhonesContainer>
       </td>
       <td>
         <span>
@@ -70,7 +151,7 @@ export default function TableRow(props: TableRowProps) {
         <TableButton>+</TableButton>
       </td>
       <ButtonTD>
-        <TableButton type="button" onClick={handleClick}>X</TableButton>
+        <TableButton type="button" onClick={handleDelete}>X</TableButton>
       </ButtonTD>
     </tr>
   );

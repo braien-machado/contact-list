@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import axios from 'axios';
 import IContact from '../interfaces/IContact';
+import IEmail from '../interfaces/IEmail';
+import IPhone from '../interfaces/IPhone';
 
 export const getContacts = async () => {
   const contacts = await axios.get('http://localhost:3001/')
@@ -15,9 +17,30 @@ export const deleteContact = async (id: number) => {
 };
 
 export const createContact = async (fullName: string) => {
-  const contact = await axios.post('http://localhost:3001/', { fullName })
-    .then((response) => response.data.result)
-    .catch((error) => console.log(error));
+  await axios.post('http://localhost:3001/', { fullName })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
-  return contact as IContact;
+export const createPhone = async (phoneObj: Partial<IPhone>) => {
+  const created = await axios.post('http://localhost:3001/phone', phoneObj)
+    .then(() => true)
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
+
+  return created;
+};
+
+export const createEmail = async (emailObj: Partial<IEmail>) => {
+  const created = await axios.post('http://localhost:3001/email', emailObj)
+    .then(() => true)
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
+
+  return created;
 };
