@@ -106,6 +106,7 @@ export default function TableRow(props: TableRowProps) {
     if (done) {
       updateList();
       setNewPhone('');
+      closePhoneInput();
     }
   };
 
@@ -123,6 +124,7 @@ export default function TableRow(props: TableRowProps) {
     if (done) {
       updateList();
       setNewEmail('');
+      closeEmailInput();
     }
   };
 
@@ -140,12 +142,7 @@ export default function TableRow(props: TableRowProps) {
     emails.map((email) => (
       <EmailContainer email={email} key={email.id} updateList={updateList} />
     )));
-  // update name, email, phone and whatsapp
-  // delete email, phone
-  // create phone with whatsapp
-  // test
-  // useContext?
-  // docker
+
   return (
     <tr>
       <td>{ fullName }</td>
