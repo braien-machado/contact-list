@@ -24,14 +24,21 @@ const MainContent = styled.table`
   }
 `;
 
+const MessageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100vw;
+`;
+
 export default function Table(props: TableProps) {
   const { contacts, updateList } = props;
 
   if (contacts.length === 0) {
     return (
-      <div>
+      <MessageContainer>
         <p>You have not registered any contacts yet.</p>
-      </div>
+      </MessageContainer>
     );
   }
 
