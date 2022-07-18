@@ -196,6 +196,42 @@ describe('request functions', () => {
     });
   });
 
+  describe('patchName', () => {
+    let result: boolean;
+
+    describe('successful request', () => {
+      beforeEach(async () => {
+        mockAxiosPatch.mockImplementation(() => Promise.resolve());
+
+        result = await request.patchName(1, 'Updated Name');
+      });
+
+      it('should call axios.patch', () => {
+        expect(axios.patch).toHaveBeenCalledTimes(1);
+      });
+
+      it('should return true', () => {
+        expect(result).toBe(true);
+      });
+    });
+
+    describe('unsuccessful request', () => {
+      beforeEach(async () => {
+        mockAxiosPatch.mockImplementation(() => Promise.reject(new Error('error')));
+
+        result = await request.patchName(1, 'Updated Name');
+      });
+
+      it('should return false', () => {
+        expect(result).toBe(false);
+      });
+
+      it('should call console.log', () => {
+        expect(console.log).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
   describe('patchEmail', () => {
     let result: boolean;
 
