@@ -31,6 +31,17 @@ export const deletePhone = async (id: number) => {
     .catch((error) => console.log(error));
 };
 
+export const patchName = async (id: number, fullName: string) => {
+  const updated = await axios.patch(`http://localhost:3001/${id}`, { fullName })
+    .then(() => true)
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
+
+  return updated;
+};
+
 export const patchPhone = async (id: number, phoneObj: Partial<IPhone>) => {
   const updated = await axios.patch(`http://localhost:3001/phone/${id}`, phoneObj)
     .then(() => true)
