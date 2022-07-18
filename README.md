@@ -3,6 +3,10 @@
 # Contact List
 This project is a simple contact list built from scratch.
 
+![contact name interaction demo](./assets/contact-list-gif1)
+![contact phone interaction demo](./assets/contact-list-gif2)
+![contact email interaction demo](./assets/contact-list-gif3)
+
 ## Sumary
 - [Description](#contact-list)
 - [Technologies](#technologies)
