@@ -1,7 +1,7 @@
 interface IEmail {
   id: number;
   email: string;
-  ownerId: number;
+  ownerId?: number;
 }
 
 export default IEmail;

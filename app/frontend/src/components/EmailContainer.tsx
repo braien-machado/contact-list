@@ -41,14 +41,14 @@ export default function EmailContainer(props: EmailProps) {
       {
         isMenuHidden ? (
           <>
-            <span>
+            <span data-testid={`email-span-${email.id}`}>
               { email.email }
             </span>
-            <button type="button" onClick={() => setIsMenuHidden(false)}>...</button>
+            <button type="button" data-testid={`email-menu-button-${email.id}`} onClick={() => setIsMenuHidden(false)}>...</button>
           </>
         ) : (
           <>
-            <Input type="text" placeholder={email.email} onChange={({ target }) => setUpdatedEmail(target.value)} />
+            <Input type="text" data-testid={`email-input-${email.id}`} placeholder={email.email} onChange={({ target }) => setUpdatedEmail(target.value)} />
             <div>
               <button type="button" disabled={editDisabled} onClick={editEmail}>Edit</button>
               <button type="button" onClick={removeEmail}>Remove</button>

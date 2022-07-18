@@ -43,3 +43,16 @@ jobs:
           cd app/backend
           npm i
           npm test
+
+  Frontend-Tests:
+    runs-on: ubuntu-latest
+    name: Frontend Tests
+    steps:
+      - name: Fetch project repository
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: |
+          cd app/frontend
+          npm i
+          npm test

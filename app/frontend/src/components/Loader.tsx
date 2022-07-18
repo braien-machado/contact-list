@@ -43,7 +43,7 @@ export default function LoaderComponent() {
   return (
     <LoaderContainer>
       <div className="loader-bg" />
-      <div className="loader" />
+      <div className="loader" data-testid="loader-component" />
     </LoaderContainer>
   );
 }

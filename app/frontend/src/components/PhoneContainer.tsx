@@ -36,7 +36,8 @@ export default function PhoneContainer(props: PhoneProps) {
     const done = await patchPhone(
       phone.id,
       {
-        phoneNumber: phoneNumber === phone.phoneNumber ? undefined : phoneNumber,
+        phoneNumber: (phoneNumber === phone.phoneNumber
+          || phoneNumber.length === 0) ? undefined : phoneNumber,
         whatsapp: whatsapp === phone.whatsapp ? undefined : whatsapp,
       },
     );
@@ -52,18 +53,19 @@ export default function PhoneContainer(props: PhoneProps) {
       {
         isMenuHidden ? (
           <>
-            <span>
+            <span data-testid={`phone-span-${phone.id}`}>
               { phone.phoneNumber }
             </span>
-            {phone.whatsapp && (<Whatsapp />)}
-            <button type="button" onClick={() => setIsMenuHidden(false)}>...</button>
+            {phone.whatsapp && (<div data-testid={`whatsapp-logo-${phone.id}`}><Whatsapp /></div>)}
+            <button data-testid={`phone-menu-button-${phone.id}`} type="button" onClick={() => setIsMenuHidden(false)}>...</button>
           </>
         ) : (
           <>
-            <Input type="text" placeholder={phone.phoneNumber} onChange={({ target }) => setUpdatedPhone({ ...updatedPhone, phoneNumber: target.value })} />
+            <Input type="text" data-testid={`phone-input-${phone.id}`} placeholder={phone.phoneNumber} onChange={({ target }) => setUpdatedPhone({ ...updatedPhone, phoneNumber: target.value })} />
             <label htmlFor="wpp-select">
               whatsapp
               <select
+                data-testid={`whatsapp-select-${phone.id}`}
                 name="whatsapp-value"
                 id="wpp-select"
                 defaultValue={phone.whatsapp ? 1 : 0}

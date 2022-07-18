@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { createEmail, createPhone, deleteContact } from '../helpers/api';
+import {
+  createEmail,
+  createPhone,
+  deleteContact,
+  patchName,
+} from '../helpers/api';
 import IContact from '../interfaces/IContact';
 import Button from '../styles/Button';
+import InfoContainer from '../styles/InfoContainer';
 import Input from '../styles/Input';
 import EmailContainer from './EmailContainer';
 import PhoneContainer from './PhoneContainer';
@@ -66,6 +72,10 @@ const TableInput = styled(Input)`
 `;
 
 export default function TableRow(props: TableRowProps) {
+  const [isMenuHidden, setIsMenuHidden] = useState(true);
+  const [editDisabled, setEditDisabled] = useState(true);
+  const [updatedName, setUpdatedName] = useState('');
+
   const [phoneInput, setPhoneInput] = useState(false);
   const [newPhone, setNewPhone] = useState('');
   const [phoneBtnDisabled, setPhoneBtnDisabled] = useState(true);
@@ -88,9 +98,19 @@ export default function TableRow(props: TableRowProps) {
     const phoneRegex = /^\+[1-9][0-9]\d{1,14}$/;
     const emailRegex = /^[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+$/;
 
+    setEditDisabled(updatedName.length === 0 || updatedName === fullName);
     setPhoneBtnDisabled(!phoneRegex.test(newPhone));
     setEmailBtnDisabled(!emailRegex.test(newEmail));
-  }, [newPhone, newEmail]);
+  }, [newPhone, newEmail, fullName, updatedName]);
+
+  const editName = async () => {
+    const done = await patchName(id, updatedName);
+
+    if (done) {
+      setIsMenuHidden(true);
+      updateList();
+    }
+  };
 
   const openPhoneInput = () => {
     setPhoneInput(true);
@@ -145,7 +165,26 @@ export default function TableRow(props: TableRowProps) {
 
   return (
     <tr>
-      <td>{ fullName }</td>
+      <td>
+        <InfoContainer>
+          {
+            isMenuHidden ? (
+              <>
+                <span data-testid={`name-span-${id}`}>{ fullName }</span>
+                <button data-testid={`name-menu-button-${id}`} type="button" onClick={() => setIsMenuHidden(false)}>...</button>
+              </>
+            ) : (
+              <>
+                <Input type="text" data-testid={`name-input-${id}`} placeholder={fullName} onChange={({ target }) => setUpdatedName(target.value)} />
+                <div>
+                  <button type="button" disabled={editDisabled} onClick={editName}>Edit</button>
+                  <button type="button" onClick={() => setIsMenuHidden(true)}>Cancel</button>
+                </div>
+              </>
+            )
+      }
+        </InfoContainer>
+      </td>
       <td>
         <ListContainer>
           {spanPhones()}
@@ -155,12 +194,13 @@ export default function TableRow(props: TableRowProps) {
               <ConfirmButton
                 disabled={phoneBtnDisabled}
                 onClick={addPhone}
+                data-testid={`phone-add-confirm-button-${id}`}
               >
                 V
               </ConfirmButton>
-              <CancelButton onClick={closePhoneInput}>X</CancelButton>
+              <CancelButton data-testid={`phone-add-cancel-button-${id}`} onClick={closePhoneInput}>X</CancelButton>
             </InputContainer>
-          ) : <TableButton onClick={openPhoneInput}>+</TableButton>}
+          ) : <TableButton data-testid={`phone-add-button-${id}`} onClick={openPhoneInput}>+</TableButton>}
         </ListContainer>
       </td>
       <td>
@@ -172,16 +212,17 @@ export default function TableRow(props: TableRowProps) {
               <ConfirmButton
                 disabled={emailBtnDisabled}
                 onClick={addEmail}
+                data-testid={`email-add-confirm-button-${id}`}
               >
                 V
               </ConfirmButton>
-              <CancelButton onClick={closeEmailInput}>X</CancelButton>
+              <CancelButton data-testid={`email-add-cancel-button-${id}`} onClick={closeEmailInput}>X</CancelButton>
             </InputContainer>
-          ) : <TableButton onClick={openEmailInput}>+</TableButton>}
+          ) : <TableButton data-testid={`email-add-button-${id}`} onClick={openEmailInput}>+</TableButton>}
         </ListContainer>
       </td>
       <ButtonTD>
-        <TableButton type="button" onClick={removeContact}>X</TableButton>
+        <TableButton data-testid={`contact-remove-button-${id}`} type="button" onClick={removeContact}>X</TableButton>
       </ButtonTD>
     </tr>
   );
