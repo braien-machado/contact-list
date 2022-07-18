@@ -3,7 +3,12 @@ import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TableRow from '../components/TableRow';
 import mockedContacts from './mocks/contact';
-import { createEmail, createPhone, deleteContact } from '../helpers/api';
+import {
+  createEmail,
+  createPhone,
+  deleteContact,
+  patchName,
+} from '../helpers/api';
 
 jest.mock('../helpers/api');
 
@@ -11,6 +16,7 @@ const mockUpdateList = jest.fn();
 const mockDeleteContact = deleteContact as jest.MockedFunction<typeof deleteContact>;
 const mockCreatePhone = createPhone as jest.MockedFunction<typeof createPhone>;
 const mockCreateEmail = createEmail as jest.MockedFunction<typeof createEmail>;
+const mockPatchName = patchName as jest.MockedFunction<typeof patchName>;
 
 describe('TableRow component', () => {
   beforeEach(() => {
@@ -24,7 +30,7 @@ describe('TableRow component', () => {
   });
 
   it('should render the expected elements', () => {
-    const name = screen.getByTestId(`contact-name-${mockedContacts[1].id}`);
+    const name = screen.getByTestId(`name-span-${mockedContacts[1].id}`);
     const email = screen.getByTestId(`email-span-${mockedContacts[1].emails[0].id}`);
     const emailMenuBtn = screen.getByTestId(`email-menu-button-${mockedContacts[1].emails[0].id}`);
     const emailAddBtn = screen.getByTestId(`email-add-button-${mockedContacts[1].id}`);
@@ -58,6 +64,106 @@ describe('TableRow component', () => {
     expect(addEmailInput).not.toBeInTheDocument();
     expect(confirmEmailBtn).not.toBeInTheDocument();
     expect(cancelEmailBtn).not.toBeInTheDocument();
+  });
+
+  it('menu button click should render the expected elements', () => {
+    const name = screen.getByTestId(`name-span-${mockedContacts[1].id}`);
+    const menuBtn = screen.getByTestId(`name-menu-button-${mockedContacts[1].id}`);
+
+    userEvent.click(menuBtn);
+
+    const nameInput = screen.getByPlaceholderText(/testname2/i);
+    const editBtn = screen.getByRole('button', { name: /edit/i });
+    const cancelBtn = screen.getByRole('button', { name: /cancel/i });
+
+    expect(name).not.toBeInTheDocument();
+    expect(menuBtn).not.toBeInTheDocument();
+
+    expect(nameInput).toBeInTheDocument();
+    expect(editBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
+  });
+
+  it('edit button click should call the expected functions when name input has a different valid value', async () => {
+    mockPatchName.mockResolvedValue(true);
+
+    const menuBtn = screen.getByTestId(`name-menu-button-${mockedContacts[1].id}`);
+
+    userEvent.click(menuBtn);
+
+    const nameInput = screen.getByPlaceholderText(/testname2/i);
+    const editBtn = screen.getByRole('button', { name: /edit/i });
+
+    expect(editBtn).toBeDisabled();
+
+    userEvent.type(nameInput, 'Updated Name');
+
+    expect(editBtn).not.toBeDisabled();
+
+    await act(async () => userEvent.click(editBtn));
+
+    expect(mockPatchName).toHaveBeenCalledTimes(1);
+    expect(mockUpdateList).toHaveBeenCalledTimes(1);
+  });
+
+  it('edit button click should hide menu when name input has a valid value', async () => {
+    mockPatchName.mockResolvedValue(true);
+
+    const menuBtn = screen.getByTestId(`name-menu-button-${mockedContacts[1].id}`);
+
+    userEvent.click(menuBtn);
+
+    const nameInput = screen.getByPlaceholderText(/testname2/i);
+    const editBtn = screen.getByRole('button', { name: /edit/i });
+    const cancelBtn = screen.getByRole('button', { name: /cancel/i });
+
+    userEvent.type(nameInput, 'Updated Name');
+
+    await act(async () => userEvent.click(editBtn));
+
+    expect(nameInput).not.toBeInTheDocument();
+    expect(editBtn).not.toBeInTheDocument();
+    expect(cancelBtn).not.toBeInTheDocument();
+  });
+
+  it('edit button click should not hide menu when there is an error in request', async () => {
+    mockPatchName.mockResolvedValue(false);
+
+    const menuBtn = screen.getByTestId(`name-menu-button-${mockedContacts[1].id}`);
+
+    userEvent.click(menuBtn);
+
+    const nameInput = screen.getByPlaceholderText(/testname2/i);
+    const editBtn = screen.getByRole('button', { name: /edit/i });
+    const cancelBtn = screen.getByRole('button', { name: /cancel/i });
+
+    userEvent.type(nameInput, 'Updated Name');
+
+    await act(async () => userEvent.click(editBtn));
+
+    expect(nameInput).toBeInTheDocument();
+    expect(editBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
+  });
+
+  it('cancel button click should hide expected elements', async () => {
+    const menuBtn = screen.getByTestId(`name-menu-button-${mockedContacts[1].id}`);
+
+    userEvent.click(menuBtn);
+
+    const nameInput = screen.getByPlaceholderText(/testname2/i);
+    const editBtn = screen.getByRole('button', { name: /edit/i });
+    const cancelBtn = screen.getByRole('button', { name: /cancel/i });
+
+    expect(nameInput).toBeInTheDocument();
+    expect(editBtn).toBeInTheDocument();
+    expect(cancelBtn).toBeInTheDocument();
+
+    userEvent.click(cancelBtn);
+
+    expect(nameInput).not.toBeInTheDocument();
+    expect(editBtn).not.toBeInTheDocument();
+    expect(cancelBtn).not.toBeInTheDocument();
   });
 
   it('remove contact button should call the expected functions', async () => {

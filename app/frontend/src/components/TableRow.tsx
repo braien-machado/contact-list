@@ -170,7 +170,7 @@ export default function TableRow(props: TableRowProps) {
           {
             isMenuHidden ? (
               <>
-                <span data-testid={`contact-name-${id}`}>{ fullName }</span>
+                <span data-testid={`name-span-${id}`}>{ fullName }</span>
                 <button data-testid={`name-menu-button-${id}`} type="button" onClick={() => setIsMenuHidden(false)}>...</button>
               </>
             ) : (
