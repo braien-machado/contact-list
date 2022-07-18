@@ -70,63 +70,134 @@ describe('PhoneContainer component', () => {
 
     it('edit button click should call the expected functions when phone input has a different valid phone', async () => {
       mockPatchPhone.mockResolvedValue(true);
-  
+
       const menuBtn = screen.getByRole('button', { name: /\.\.\./i });
-  
+
       userEvent.click(menuBtn);
-  
+
       const phoneInput = screen.getByPlaceholderText(/\+55222222/i);
       const editBtn = screen.getByRole('button', { name: /edit/i });
-  
+
       expect(editBtn).toBeDisabled();
-  
+
       userEvent.type(phoneInput, '+552687');
-  
+
       expect(editBtn).not.toBeDisabled();
-  
+
       await act(async () => userEvent.click(editBtn));
-  
+
       expect(mockPatchPhone).toHaveBeenCalledTimes(1);
       expect(mockUpdateList).toHaveBeenCalledTimes(1);
     });
 
+    describe('edit button click should call patchPhone with expected params', () => {
+      beforeEach(() => {
+        mockPatchPhone.mockResolvedValue(true);
+      });
+
+      it('when just phone is changed', async () => {
+        const menuBtn = screen.getByRole('button', { name: /\.\.\./i });
+
+        userEvent.click(menuBtn);
+
+        const phoneInput = screen.getByPlaceholderText(/\+55222222/i);
+        const editBtn = screen.getByRole('button', { name: /edit/i });
+
+        userEvent.type(phoneInput, '+552687');
+
+        await act(async () => userEvent.click(editBtn));
+
+        expect(mockPatchPhone).toBeCalledWith(
+          mockedPhone.id,
+          {
+            phoneNumber: '+552687',
+            whatsapp: undefined,
+          },
+        );
+      });
+
+      it('when just whatsapp is changed', async () => {
+        const menuBtn = screen.getByRole('button', { name: /\.\.\./i });
+
+        userEvent.click(menuBtn);
+
+        const editBtn = screen.getByRole('button', { name: /edit/i });
+        const whatsappSelect = screen.getByTestId(`whatsapp-select-${mockedPhone.id}`);
+
+        userEvent.selectOptions(whatsappSelect, 'no');
+
+        await act(async () => userEvent.click(editBtn));
+
+        expect(mockPatchPhone).toBeCalledWith(
+          mockedPhone.id,
+          {
+            phoneNumber: undefined,
+            whatsapp: false,
+          },
+        );
+      });
+
+      it('when phone number and whatsapp are changed', async () => {
+        const menuBtn = screen.getByRole('button', { name: /\.\.\./i });
+
+        userEvent.click(menuBtn);
+
+        const editBtn = screen.getByRole('button', { name: /edit/i });
+        const phoneInput = screen.getByPlaceholderText(/\+55222222/i);
+        const whatsappSelect = screen.getByTestId(`whatsapp-select-${mockedPhone.id}`);
+
+        userEvent.type(phoneInput, '+552687');
+        userEvent.selectOptions(whatsappSelect, 'no');
+
+        await act(async () => userEvent.click(editBtn));
+
+        expect(mockPatchPhone).toBeCalledWith(
+          mockedPhone.id,
+          {
+            phoneNumber: '+552687',
+            whatsapp: false,
+          },
+        );
+      });
+    });
+
     it('edit button should stay disabled when whatsapp select and phone input have not different values', async () => {
       mockPatchPhone.mockResolvedValue(true);
-  
+
       const menuBtn = screen.getByRole('button', { name: /\.\.\./i });
-  
+
       userEvent.click(menuBtn);
-  
+
       const phoneInput = screen.getByPlaceholderText(/\+55222222/i);
       const whatsappSelect = screen.getByTestId(`whatsapp-select-${mockedPhone.id}`);
       const editBtn = screen.getByRole('button', { name: /edit/i });
-  
+
       expect(editBtn).toBeDisabled();
-  
+
       userEvent.selectOptions(whatsappSelect, 'yes');
       userEvent.type(phoneInput, '+55222222');
-  
+
       expect(editBtn).toBeDisabled();
     });
 
     it('edit button click should call the expected functions when whatsapp select has a different value', async () => {
       mockPatchPhone.mockResolvedValue(true);
-  
+
       const menuBtn = screen.getByRole('button', { name: /\.\.\./i });
-  
+
       userEvent.click(menuBtn);
-  
+
       const whatsappSelect = screen.getByTestId(`whatsapp-select-${mockedPhone.id}`);
       const editBtn = screen.getByRole('button', { name: /edit/i });
-  
+
       expect(editBtn).toBeDisabled();
-  
+
       userEvent.selectOptions(whatsappSelect, 'no');
-  
+
       expect(editBtn).not.toBeDisabled();
-  
+
       await act(async () => userEvent.click(editBtn));
-  
+
       expect(mockPatchPhone).toHaveBeenCalledTimes(1);
       expect(mockUpdateList).toHaveBeenCalledTimes(1);
     });

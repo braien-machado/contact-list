@@ -36,7 +36,8 @@ export default function PhoneContainer(props: PhoneProps) {
     const done = await patchPhone(
       phone.id,
       {
-        phoneNumber: phoneNumber === phone.phoneNumber ? undefined : phoneNumber,
+        phoneNumber: (phoneNumber === phone.phoneNumber
+          || phoneNumber.length === 0) ? undefined : phoneNumber,
         whatsapp: whatsapp === phone.whatsapp ? undefined : whatsapp,
       },
     );
