@@ -64,6 +64,7 @@ export default function PhoneContainer(props: PhoneProps) {
             <label htmlFor="wpp-select">
               whatsapp
               <select
+                data-testid={`whatsapp-select-${phone.id}`}
                 name="whatsapp-value"
                 id="wpp-select"
                 defaultValue={phone.whatsapp ? 1 : 0}
