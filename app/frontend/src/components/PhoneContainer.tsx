@@ -55,7 +55,7 @@ export default function PhoneContainer(props: PhoneProps) {
             <span data-testid={`phone-span-${phone.id}`}>
               { phone.phoneNumber }
             </span>
-            {phone.whatsapp && (<Whatsapp />)}
+            {phone.whatsapp && (<div data-testid={`whatsapp-logo-${phone.id}`}><Whatsapp /></div>)}
             <button data-testid={`phone-menu-button-${phone.id}`} type="button" onClick={() => setIsMenuHidden(false)}>...</button>
           </>
         ) : (

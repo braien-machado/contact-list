@@ -29,6 +29,7 @@ describe('TableRow component', () => {
     const emailMenuBtn = screen.getByTestId(`email-menu-button-${mockedContacts[1].emails[0].id}`);
     const emailAddBtn = screen.getByTestId(`email-add-button-${mockedContacts[1].id}`);
     const phone = screen.getByTestId(`phone-span-${mockedContacts[1].phoneNumbers[0].id}`);
+    const whatsappLogo = screen.getByTestId(`whatsapp-logo-${mockedContacts[1].phoneNumbers[0].id}`);
     const phoneMenuBtn = screen.getByTestId(`phone-menu-button-${mockedContacts[1].phoneNumbers[0].id}`);
     const phoneAddBtn = screen.getByTestId(`phone-add-button-${mockedContacts[1].id}`);
     const contactRemoveBtn = screen.getByTestId(`contact-remove-button-${mockedContacts[1].id}`);
@@ -46,6 +47,7 @@ describe('TableRow component', () => {
     expect(emailMenuBtn).toBeInTheDocument();
     expect(emailAddBtn).toBeInTheDocument();
     expect(phone).toBeInTheDocument();
+    expect(whatsappLogo).toBeInTheDocument();
     expect(phoneMenuBtn).toBeInTheDocument();
     expect(phoneAddBtn).toBeInTheDocument();
     expect(contactRemoveBtn).toBeInTheDocument();
@@ -273,5 +275,21 @@ describe('TableRow component', () => {
     expect(addInput).toBeInTheDocument();
     expect(confirmBtn).toBeInTheDocument();
     expect(cancelBtn).toBeInTheDocument();
+  });
+});
+
+describe('No whatsapp phone contact', () => {
+  it('should not render logo', () => {
+    render(
+      <table>
+        <tbody>
+          <TableRow updateList={mockUpdateList} contact={mockedContacts[2]} />
+        </tbody>
+      </table>,
+    );
+
+    const whatsappLogo = screen.queryByTestId(`whatsapp-logo-${mockedContacts[1].phoneNumbers[0].id}`);
+
+    expect(whatsappLogo).not.toBeInTheDocument();
   });
 });

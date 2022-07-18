@@ -30,6 +30,18 @@ const mockedContacts: IContact[] = [
       },
     ],
   },
+  {
+    id: 3,
+    fullName: 'TestName3',
+    emails: [],
+    phoneNumbers: [
+      {
+        id: 1,
+        phoneNumber: '+555555555',
+        whatsapp: false,
+      },
+    ],
+  },
 ];
 
 export default mockedContacts;
