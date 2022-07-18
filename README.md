@@ -34,9 +34,11 @@ This project is a simple contact list built from scratch.
 
 4. Build the mySQL database with *docker-compose*
 	- `npm run compose:up`
+	- Obs: If you get a timeout error in the first time running compose:up, remove the container and run the command again.
 5. Create a *.env* file with a DATABASE_URL value as in *.env.example* if using db from my docker-compose or edit the value to use another mysql database
 6. Go to backend directory and start the api
 	-  `cd app/backend && npm start`
+	- Obs: If you get a server error, check the db container status. While its status is not `Healthy` wait a little longer. When `Healthy`, run `npm start` again
 7. Open another terminal, go to frontend directory and start the app
 	-  `cd app/frontend && npm start`
 8. If the app do not open automatically, search for http://localhost:3000/ in any browser
@@ -48,11 +50,15 @@ This project is a simple contact list built from scratch.
 2. Run the tests
 	- `npm run test:coverage`
 
+![backend tests 93% line coverage](./assets/backend-coverage.png)
+
 ### Frontend
 1. Go to frontend directory
 	- `cd app/frontend`
 2. Run the tests
 	- `npm run test:coverage`
+
+![frontend tests 97% line coverage](./assets/frontend-coverage.png)
 
 ## Next steps
 To improve the project, I think I could work on the following subjects:
