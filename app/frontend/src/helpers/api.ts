@@ -9,25 +9,35 @@ export const getContacts = async () => {
     .then((response) => response.data.result)
     .catch((error) => console.log(error));
 
+  if (!contacts) {
+    return [] as IContact[];
+  }
+
   return contacts as IContact[];
 };
 
 export const deleteContact = async (id: number) => {
-  await axios.delete(`http://localhost:3001/${id}`);
+  await axios.delete(`http://localhost:3001/${id}`)
+    .catch((error) => console.log(error));
 };
 
 export const deleteEmail = async (id: number) => {
-  await axios.delete(`http://localhost:3001/email/${id}`);
+  await axios.delete(`http://localhost:3001/email/${id}`)
+    .catch((error) => console.log(error));
 };
 
 export const deletePhone = async (id: number) => {
-  await axios.delete(`http://localhost:3001/phone/${id}`);
+  await axios.delete(`http://localhost:3001/phone/${id}`)
+    .catch((error) => console.log(error));
 };
 
 export const patchPhone = async (id: number, phoneObj: Partial<IPhone>) => {
   const updated = await axios.patch(`http://localhost:3001/phone/${id}`, phoneObj)
     .then(() => true)
-    .catch(() => false);
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
 
   return updated;
 };
@@ -35,7 +45,10 @@ export const patchPhone = async (id: number, phoneObj: Partial<IPhone>) => {
 export const patchEmail = async (id: number, email: string) => {
   const updated = await axios.patch(`http://localhost:3001/email/${id}`, { email })
     .then(() => true)
-    .catch(() => false);
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
 
   return updated;
 };
