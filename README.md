@@ -34,10 +34,12 @@ This project is a simple contact list built from scratch.
 
 4. Build the mySQL database with *docker-compose*
 	- `npm run compose:up`
-5. Go to backend directory and start the api
+5. Create a *.env* file with a DATABASE_URL value as in *.env.example* if using db from my docker-compose or edit the value to use another mysql database
+6. Go to backend directory and start the api
 	-  `cd app/backend && npm start`
-5. Open another terminal, go to frontend directory and start the app
+7. Open another terminal, go to frontend directory and start the app
 	-  `cd app/frontend && npm start`
+8. If the app do not open automatically, search for http://localhost:3000/ in any browser
 
 ## Tests coverage
 ### Backend
